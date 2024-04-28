@@ -2,77 +2,43 @@ import tkinter as tk
 
 class DragAndDrop(tk.Frame):
     def __init__(self, master):
-        """
-        Initialize the program
-        :param master: tk.Tk
-        """
         super().__init__(master)
         self.master = master
         self.configure_master()
         self.initialize_canvas()
+        self.add_gate_button()
 
     def configure_master(self):
-        """
-        Configure master window's properties
-        :return: None
-        """
         self.master.title("Drag And Drop")
         self.master.iconbitmap("dnd.ico")
-        self.master.geometry("600x600")
+        self.master.geometry("800x600")
         self.master.resizable(False, False)
 
     def initialize_canvas(self):
-        """
-        Set up the canvas and place test objects on it
-        :return: None
-        """
         self.canvas = tk.Canvas(width=600, height=600, bg="gray")
-        self.canvas.pack()
+        self.canvas.pack(side="left")
 
         self.move_data = {"object": None, "x": 0, "y": 0}
-
-        self.gate = Gate("AND")
-        self.gate.create_gate(self.canvas)
 
         self.bind_tags("movable")
 
     def bind_tags(self, tag):
-        """
-        Binding the given tag to events that correspond to drag and drop action
-        :param tag: str
-        :return: None
-        """
         self.canvas.tag_bind(tag, "<ButtonPress-1>", self.move_start)
         self.canvas.tag_bind(tag, "<ButtonRelease-1>", self.move_stop)
         self.canvas.tag_bind(tag, "<B1-Motion>", self.move)
 
     def move_start(self, event):
-        """
-        Method that gets called whenever the drag and drop action starts
-        :param event: tk.Event
-        :return: None
-        """
         self.move_data["object"] = self.canvas.find_closest(event.x, event.y)[0]
         self.move_data["x"] = event.x
         self.move_data["y"] = event.y
         self.canvas.tag_raise(self.move_data["object"])
 
     def move_stop(self, event):
-        """
-        Method that gets called whenever the drag and drop action finishes
-        :param event: tk.Event
-        :return: None
-        """
         self.move_data["object"] = None
         self.move_data["x"] = 0
         self.move_data["y"] = 0
 
     def move(self, event):
-        """
-        Method that gets called while the drag and drop action continues
-        :param event: tk.Event
-        :return: None
-        """
         dx = event.x - self.move_data["x"]
         dy = event.y - self.move_data["y"]
 
@@ -80,6 +46,31 @@ class DragAndDrop(tk.Frame):
 
         self.move_data["x"] = event.x
         self.move_data["y"] = event.y
+
+    def add_gate_button(self):
+        button_frame = tk.Frame(self.master, bg="gray")
+        button_frame.pack(side="right", fill="both", expand=True)
+
+        and_button = tk.Button(button_frame, text="AND", command=self.add_and_gate)
+        and_button.pack(fill="x")
+
+        or_button = tk.Button(button_frame, text="OR", command=self.add_or_gate)
+        or_button.pack(fill="x")
+
+        xor_button = tk.Button(button_frame, text="XOR", command=self.add_xor_gate)
+        xor_button.pack(fill="x")
+
+    def add_and_gate(self):
+        self.gate = Gate("AND")
+        self.gate.create_gate(self.canvas)
+
+    def add_or_gate(self):
+        self.gate = Gate("OR")
+        self.gate.create_gate(self.canvas)
+
+    def add_xor_gate(self):
+        self.gate = Gate("XOR")
+        self.gate.create_gate(self.canvas)
 
 class Gate:
     def __init__(self, gate_type):
@@ -93,10 +84,10 @@ class Gate:
         height = 50
 
         gate_id = canvas.create_rectangle(x, y, x + width, y + height, fill='white', tags=("movable", "gate"))
-        gate_text_id = canvas.create_text(x + width / 2, y + height / 2, text=self.gate_type, font=('Helvetica', 12), fill='black')
+        gate_text_id = canvas.create_text(x + width / 2, y + height /2, text=self.gate_type, font=('Helvetica', 12), fill='black')
 
         for i in range(2):
-            input_id = canvas.create_rectangle(x - 20 - i * 30, y - 20, x - 20 - i * 30 + 10,y, fill='white')
+            input_id = canvas.create_rectangle(x - 20 - i * 30, y - 20, x - 20 - i * 30 + 10, y, fill='white')
             self.inputs.append(input_id)
 
         canvas.tag_bind(gate_id, "<ButtonPress-1>", self.move_start)
