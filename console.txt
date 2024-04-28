@@ -1,0 +1,141 @@
+DEBUG: General     , 1707411450286> LoggerManager.init                  > Initializing...
+LOG  : General     , 1707411450515> cachedir set to "C:\Users\TaPoK\Zomboid"
+LOG  : General     , 1707411450555> 08-02-2024 19:57:30
+LOG  : General     , 1707411450556> cachedir is "C:\Users\TaPoK\Zomboid"
+LOG  : General     , 1707411450559> LogFileDir is "C:\Users\TaPoK\Zomboid\Logs"
+LOG  : General     , 1707411450560> ===== System specs =====
+LOG  : General     , 1707411450565> OS: Windows 10, version: 10.0, arch: amd64
+LOG  : General     , 1707411450567> Processor: Intel64 Family 6 Model 23 Stepping 10, GenuineIntel
+LOG  : General     , 1707411450568> Processor cores: 4
+LOG  : General     , 1707411450571> Available processors (cores): 4
+LOG  : General     , 1707411450576> Memory free: 101.10518 MB
+LOG  : General     , 1707411450577> Memory max: 3072.0 MB
+LOG  : General     , 1707411450578> Memory  total available to JVM: 112.0 MB
+LOG  : General     , 1707411456174> C:\, Total: 446.64062 GB, Free: 246.94157 GB
+LOG  : General     , 1707411456175> D:\, Total: 0.097652435 GB, Free: 0.06555557 GB
+LOG  : General     , 1707411456177> E:\, Total: 145.28027 GB, Free: 77.74794 GB
+LOG  : General     , 1707411456177> G:\, Total: 232.78613 GB, Free: 25.693783 GB
+LOG  : General     , 1707411456178> H:\, Total: 786.2295 GB, Free: 345.0776 GB
+LOG  : General     , 1707411456491> Mobo = [Product=P5B]
+LOG  : General     , 1707411456671> CPU = { [Manufacturer=GenuineIntel,MaxClockSpeed=2830,Name=Intel(R) Core(TM)2 Quad CPU] }
+LOG  : General     , 1707411456861> Graphics = [AdapterRAM=4293918720,DriverVersion=31.0.12027.9001,Name=AMD Radeon RX 580 2048SP]
+LOG  : General     , 1707411457066> VideoMode = [VideoModeDescription=Цвета: 1920 x 1080 x 4294967296]
+LOG  : General     , 1707411457241> Sound = { [Manufacturer=Advanced Micro Devices,Name=AMD High Definition Audio Device], [Manufacturer=Microsoft,Name=Устройство с поддержкой High Definition Audio] }
+LOG  : General     , 1707411457431> Memory RAM = { [Capacity=2147483648,Manufacturer=0], [Capacity=2147483648,Manufacturer=1], [Capacity=2147483648,Manufacturer=2], [Capacity=2147483648,Manufacturer=3] }
+LOG  : General     , 1707411457433> ========================
+LOG  : General     , 1707411457434> -- listing properties --
+LOG  : General     , 1707411457434> java.specification.version=17
+LOG  : General     , 1707411457435> sun.cpu.isalist=amd64
+LOG  : General     , 1707411457435> sun.jnu.encoding=Cp1251
+LOG  : General     , 1707411457435> java.class.path=.;commons-compress-1.18.jar;istack-co...
+LOG  : General     , 1707411457436> java.vm.vendor=Azul Systems, Inc.
+LOG  : General     , 1707411457436> sun.arch.data.model=64
+LOG  : General     , 1707411457436> user.variant=
+LOG  : General     , 1707411457438> java.vendor.url=http://www.azul.com/
+LOG  : General     , 1707411457438> user.timezone=Europe/Moscow
+LOG  : General     , 1707411457439> zomboid.steam=0
+LOG  : General     , 1707411457440> java.vm.specification.version=17
+LOG  : General     , 1707411457440> os.name=Windows 10
+LOG  : General     , 1707411457441> user.country=RU
+LOG  : General     , 1707411457441> sun.boot.library.path=C:\GOG Games\Project Zomboid\jre64\bin
+LOG  : General     , 1707411457441> zomboid.znetlog=1
+LOG  : General     , 1707411457442> jdk.debug=release
+LOG  : General     , 1707411457443> sun.cpu.endian=little
+LOG  : General     , 1707411457444> user.home=C:\Users\TaPoK
+LOG  : General     , 1707411457445> user.language=ru
+LOG  : General     , 1707411457445> java.specification.vendor=Oracle Corporation
+LOG  : General     , 1707411457446> java.version.date=2021-10-19
+LOG  : General     , 1707411457446> java.home=C:\GOG Games\Project Zomboid\jre64
+LOG  : General     , 1707411457446> file.separator=\
+LOG  : General     , 1707411457447> java.vm.compressedOopsMode=Zero based
+LOG  : General     , 1707411457447> line.separator=
+
+LOG  : General     , 1707411457447> java.vm.specification.vendor=Oracle Corporation
+LOG  : General     , 1707411457448> java.specification.name=Java Platform API Specification
+LOG  : General     , 1707411457448> java.awt.headless=true
+LOG  : General     , 1707411457449> user.script=
+LOG  : General     , 1707411457449> sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+LOG  : General     , 1707411457449> java.runtime.version=17.0.1+12-LTS
+LOG  : General     , 1707411457450> user.name=TaPoK
+LOG  : General     , 1707411457450> path.separator=;
+LOG  : General     , 1707411457450> os.version=10.0
+LOG  : General     , 1707411457451> java.runtime.name=OpenJDK Runtime Environment
+LOG  : General     , 1707411457451> file.encoding=Cp1251
+LOG  : General     , 1707411457451> java.vm.name=OpenJDK 64-Bit Server VM
+LOG  : General     , 1707411457452> java.vendor.version=Zulu17.30+15-CA
+LOG  : General     , 1707411457453> java.vendor.url.bug=http://www.azul.com/support/
+LOG  : General     , 1707411457454> java.io.tmpdir=C:\Users\TaPoK\AppData\Local\Temp\
+LOG  : General     , 1707411457454> java.version=17.0.1
+LOG  : General     , 1707411457454> user.dir=C:\GOG Games\Project Zomboid
+LOG  : General     , 1707411457455> os.arch=amd64
+LOG  : General     , 1707411457455> java.vm.specification.name=Java Virtual Machine Specification
+LOG  : General     , 1707411457455> sun.os.patch.level=
+LOG  : General     , 1707411457455> native.encoding=Cp1251
+LOG  : General     , 1707411457456> java.library.path=win64/;.
+LOG  : General     , 1707411457457> java.vm.info=mixed mode, sharing
+LOG  : General     , 1707411457457> java.vendor=Azul Systems, Inc.
+LOG  : General     , 1707411457457> java.vm.version=17.0.1+12-LTS
+LOG  : General     , 1707411457458> sun.io.unicode.encoding=UnicodeLittle
+LOG  : General     , 1707411457458> java.class.version=61.0
+LOG  : General     , 1707411457458> -----
+LOG  : General     , 1707411457460> version=41.78.16 demo=false
+LOG  : General     , 1707411457958> unknown option "C:\Users\Public\Desktop\ModelSim-Altera 10.0c (Quartus II 11.1) Starter Edition.lnk"
+LOG  : General     , 1707411458138> LightingFPS set to 15
+LOG  : General     , 1707411458150> [javafmodJNI] Init: Start
+LOG  : General     , 1707411458151> [javafmodJNI] Init: WIN 64
+LOG  : General     , 1707411458190> closest width=720 freq=60
+LOG  : General     , 1707411458191> closest width=720 freq=70
+LOG  : General     , 1707411458192> closest width=800 freq=60
+LOG  : General     , 1707411458193> closest width=800 freq=75
+LOG  : General     , 1707411458193> closest width=832 freq=60
+LOG  : General     , 1707411458194> closest width=832 freq=75
+LOG  : General     , 1707411458194> closest width=1024 freq=60
+LOG  : General     , 1707411458194> closest width=1128 freq=60
+LOG  : General     , 1707411458195> closest width=1128 freq=75
+LOG  : General     , 1707411458195> closest width=1280 freq=60
+LOG  : General     , 1707411458196> closest width=1366 freq=60
+LOG  : General     , 1707411458196> closest width=1440 freq=60
+LOG  : General     , 1707411458196> closest width=1600 freq=60
+LOG  : General     , 1707411458197> closest width=1760 freq=60
+LOG  : General     , 1707411458212> 1707411458203 fmod: Java loging: OK
+LOG  : General     , 1707411458231> 1707411458231 fmod: FMOD::Studio::System::create() result: No errors.
+LOG  : General     , 1707411458233> 1707411458233 fmod: FMOD::Studio::System::getCoreSystem() result: No errors.
+LOG  : General     , 1707411458234> 1707411458234 fmod: FMOD_System_GetVersion() result: No errors.
+LOG  : General     , 1707411458235> 1707411458235 fmod: fmodintegration built with version 20206, fmod shared library version 20206
+LOG  : General     , 1707411458237> 1707411458237 fmod: System Create: OK
+LOG  : General     , 1707411458238> 1707411458238 fmod: FMOD_System_SetSoftwareFormat() result: No errors.
+LOG  : General     , 1707411458336> 1707411458336 fmod: FMOD::Studio::System::Initialize() result: No errors.
+LOG  : General     , 1707411458337> 1707411458337 fmod: Creating DSP for capture sound
+LOG  : General     , 1707411458338> 1707411458338 fmod: FMOD_System_CreateDSP() result: No errors.
+LOG  : General     , 1707411458341> 1707411458341 fmod: FMOD_DSP_SetBypass() result: No errors.
+LOG  : General     , 1707411458343> 1707411458343 fmod: FMOD_System_GetMasterChannelGroup() result: No errors.
+LOG  : General     , 1707411458344> 1707411458344 fmod: FMOD_ChannelGroup_AddDSP() result: No errors.
+LOG  : General     , 1707411458345> 1707411458345 fmod: FMOD_System_Set3DSettings() result: No errors.
+LOG  : General     , 1707411459682> GraphicsCard: ATI Technologies Inc. AMD Radeon RX 580 2048SP
+LOG  : General     , 1707411459686> OpenGL version: 4.6.0 Compatibility Profile Context 22.20.27.09.230330
+LOG  : General     , 1707411459687> Desktop resolution 1920x1080
+LOG  : General     , 1707411459694> Initial resolution 1920x1080 fullScreen=true
+LOG  : General     , 1707411459766> OpenGL 1.5 buffer objects supported
+LOG  : General     , 1707411459782> VSync: OFF
+LOG  : General     , 1707411460433> ATI: available texture memory is 8180 MB
+LOG  : General     , 1707411494457> AngelCodeFont failed to load page 0 texture C:/GOG Games/Project Zomboid/media/mainfont_0.png
+LOG  : General     , 1707411494468> AngelCodeFont failed to load page 0 texture C:/GOG Games/Project Zomboid/media/mainfont2_0.png
+WARN : General     , 1707411494489> TextManager.Init> font "MediumNew" not found in fonts.txt
+WARN : General     , 1707411494490> TextManager.Init> font "AutoNormSmall" not found in fonts.txt
+WARN : General     , 1707411494492> TextManager.Init> font "AutoNormMedium" not found in fonts.txt
+WARN : General     , 1707411494492> TextManager.Init> font "AutoNormLarge" not found in fonts.txt
+LOG  : General     , 1707411494498> AngelCodeFont failed to load page 0 texture C:/GOG Games/Project Zomboid/media/fonts/zomboidDialogue.bmfc_0.png
+WARN : General     , 1707411494541> TextManager.Init> font "DebugConsole" not found in fonts.txt
+LOG  : General     , 1707411495082> Loading networking libraries...
+LOG  : General     , 1707411495084> Loading RakNet64...
+LOG  : General     , 1707411495099> Loading ZNetNoSteam64...
+LOG  : Network     , 1707411495313> [08-02-24 19:58:15.312] > ZNet: SetLogLevel 2
+LOG  : General     , 1707411495314> SteamUtils started without Steam
+LOG  : General     , 1707411495846> AngelCodeFont failed to load page 0 texture C:/GOG Games/Project Zomboid/media/mainfont_0.png
+LOG  : General     , 1707411495852> AngelCodeFont failed to load page 0 texture C:/GOG Games/Project Zomboid/media/mainfont2_0.png
+WARN : General     , 1707411495887> TextManager.Init> font "MediumNew" not found in fonts.txt
+WARN : General     , 1707411495890> TextManager.Init> font "AutoNormSmall" not found in fonts.txt
+WARN : General     , 1707411495896> TextManager.Init> font "AutoNormMedium" not found in fonts.txt
+WARN : General     , 1707411495901> TextManager.Init> font "AutoNormLarge" not found in fonts.txt
+WARN : General     , 1707411496064> TextManager.Init> font "DebugConsole" not found in fonts.txt
+LOG  : General     , 1707411496729> translator: language is RU
