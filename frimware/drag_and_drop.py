@@ -84,11 +84,14 @@ class Gate:
         height = 50
 
         gate_id = canvas.create_rectangle(x, y, x + width, y + height, fill='white', tags=("movable", "gate"))
-        gate_text_id = canvas.create_text(x + width / 2, y + height /2, text=self.gate_type, font=('Helvetica', 12), fill='black')
+        gate_text_id = canvas.create_text(x + width / 2, y + height / 2, text=self.gate_type, font=('Helvetica', 12), fill='black')
 
         for i in range(2):
             input_id = canvas.create_rectangle(x - 20 - i * 30, y - 20, x - 20 - i * 30 + 10, y, fill='white')
             self.inputs.append(input_id)
+
+        input_id = canvas.create_rectangle(x + width, y - 20, x + width + 10, y, fill='white')
+        self.inputs.append(input_id)
 
         canvas.tag_bind(gate_id, "<ButtonPress-1>", self.move_start)
         canvas.tag_bind(gate_id, "<ButtonRelease-1>", self.move_stop)
