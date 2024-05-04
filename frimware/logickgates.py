@@ -5,7 +5,6 @@ class DragAndDropConstructor:
         self.master = master
         self.master.title("Logical Scheme Constructor")
         self.master.geometry("800x600")
-
         self.canvas = tk.Canvas(self.master, width=1200, height=1000, bg="gray")
         self.canvas.pack(side="left")
         
