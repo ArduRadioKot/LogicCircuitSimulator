@@ -16,10 +16,6 @@ class DragAndDropConstructor:
 
         self.button_frame = tk.Frame(self.master)
         self.button_frame.pack()
-
-        self.add_and_button()
-        self.add_or_button()
-        self.add_not_button()
         self.add_gate_button()
 
 
@@ -81,17 +77,7 @@ class DragAndDropConstructor:
         element = event.widget
         element.place(x=event.x, y=event.y)
 
-    def add_and_button(self):
-        and_button = tk.Button(self.button_frame, text="Add AND", command=self.create_and_gate)
-        and_button.pack()
 
-    def add_or_button(self):
-        or_button = tk.Button(self.button_frame, text="Add OR", command=self.create_or_gate)
-        or_button.pack()
-
-    def add_not_button(self):
-        not_button = tk.Button(self.button_frame, text="Add NOT", command=self.create_not_gate)
-        not_button.pack()
 
     def create_and_gate(self):
         and_gate = tk.Label(self.master, text="AND", bg="gray")
