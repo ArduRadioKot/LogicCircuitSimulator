@@ -6,7 +6,7 @@ class DragAndDropConstructor:
         self.master.title("Logical Scheme Constructor")
         self.master.geometry("800x600")
 
-        self.canvas = tk.Canvas(self.master, width=800, height=600,bg="gray")
+        self.canvas = tk.Canvas(self.master, width=1200, height=1000, bg="gray")
         self.canvas.pack(side="left")
         
 
@@ -35,21 +35,21 @@ class DragAndDropConstructor:
 
     def create_draggable_elements(self):
         # Create draggable elements (e.g. AND, OR, NOT gates)
-        and_gate = tk.Label(self.master, text="AND", bg="gray")
+        and_gate = tk.Label(self.master, text="AND", bg="white", fg="black")
         and_gate.draggable = True
         and_gate.bind("<ButtonPress-1>", self.start_drag)
         and_gate.bind("<ButtonRelease-1>", self.stop_drag)
         and_gate.bind("<B1-Motion>", self.drag)
         self.elements.append(and_gate)
 
-        or_gate = tk.Label(self.master, text="OR", bg="gray")
+        or_gate = tk.Label(self.master, text="OR", bg="white", fg="black")
         or_gate.draggable = True
         or_gate.bind("<ButtonPress-1>", self.start_drag)
         or_gate.bind("<ButtonRelease-1>", self.stop_drag)
         or_gate.bind("<B1-Motion>", self.drag)
         self.elements.append(or_gate)
 
-        not_gate = tk.Label(self.master, text="NOT", bg="gray")
+        not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black")
         not_gate.draggable = True
         not_gate.bind("<ButtonPress-1>", self.start_drag)
         not_gate.bind("<ButtonRelease-1>", self.stop_drag)
