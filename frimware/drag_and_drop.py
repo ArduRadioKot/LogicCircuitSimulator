@@ -1,115 +1,110 @@
 import tkinter as tk
 
-class DragAndDrop(tk.Frame):
+class DragAndDropConstructor:
     def __init__(self, master):
-        super().__init__(master)
         self.master = master
-        self.configure_master()
-        self.initialize_canvas()
+        self.master.title("Logical Scheme Constructor")
+        self.master.geometry("800x600")
+        self.canvas = tk.Canvas(self.master, width=1200, height=1000, bg="gray")
+        self.canvas.pack(side="left")
+        
+
+        self.elements = []
+
+        self.create_draggable_elements()
+
+        self.button_frame = tk.Frame(self.master)
+        self.button_frame.pack()
         self.add_gate_button()
 
-    def configure_master(self):
-        self.master.title("Drag And Drop")
-        self.master.iconbitmap("dnd.ico")
-        self.master.geometry("800x600")
-        self.master.resizable(False, False)
 
-    def initialize_canvas(self):
-        self.canvas = tk.Canvas(width=600, height=600, bg="gray")
-        self.canvas.pack(side="left")
-
-        self.move_data = {"object": None, "x": 0, "y": 0}
-
-        self.bind_tags("movable")
-
-    def bind_tags(self, tag):
-        self.canvas.tag_bind(tag, "<ButtonPress-1>", self.move_start)
-        self.canvas.tag_bind(tag, "<ButtonRelease-1>", self.move_stop)
-        self.canvas.tag_bind(tag, "<B1-Motion>", self.move)
-
-    def move_start(self, event):
-        self.move_data["object"] = self.canvas.find_closest(event.x, event.y)[0]
-        self.move_data["x"] = event.x
-        self.move_data["y"] = event.y
-        self.canvas.tag_raise(self.move_data["object"])
-
-    def move_stop(self, event):
-        self.move_data["object"] = None
-        self.move_data["x"] = 0
-        self.move_data["y"] = 0
-
-    def move(self, event):
-        dx = event.x - self.move_data["x"]
-        dy = event.y - self.move_data["y"]
-
-        self.canvas.move(self.move_data["object"], dx, dy)
-
-        self.move_data["x"] = event.x
-        self.move_data["y"] = event.y
 
     def add_gate_button(self):
         button_frame = tk.Frame(self.master, bg="gray")
         button_frame.pack(side="right", fill="both", expand=True)
 
-        and_button = tk.Button(button_frame, text="AND", command=self.add_and_gate)
+        and_button = tk.Button(button_frame, text="AND", command=self.create_and_gate)
         and_button.pack(fill="x")
 
-        or_button = tk.Button(button_frame, text="OR", command=self.add_or_gate)
+        or_button = tk.Button(button_frame, text="OR", command=self.create_or_gate)
         or_button.pack(fill="x")
 
-        xor_button = tk.Button(button_frame, text="XOR", command=self.add_xor_gate)
+        xor_button = tk.Button(button_frame, text="XOR", command=self.create_not_gate)
         xor_button.pack(fill="x")
 
-    def add_and_gate(self):
-        self.gate = Gate("AND")
-        self.gate.create_gate(self.canvas)
+    def create_draggable_elements(self):
+        # Create draggable elements (e.g. AND, OR, NOT gates)
+        and_gate = tk.Label(self.master, text="AND", bg="white", fg="black")
+        and_gate.draggable = True
+        and_gate.bind("<ButtonPress-1>", self.start_drag)
+        and_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        and_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(and_gate)
 
-    def add_or_gate(self):
-        self.gate = Gate("OR")
-        self.gate.create_gate(self.canvas)
+        or_gate = tk.Label(self.master, text="OR", bg="white", fg="black")
+        or_gate.draggable = True
+        or_gate.bind("<ButtonPress-1>", self.start_drag)
+        or_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        or_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(or_gate)
 
-    def add_xor_gate(self):
-        self.gate = Gate("XOR")
-        self.gate.create_gate(self.canvas)
+        not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black")
+        not_gate.draggable = True
+        not_gate.bind("<ButtonPress-1>", self.start_drag)
+        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        not_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(not_gate)
 
-class Gate:
-    def __init__(self, gate_type):
-        self.gate_type = gate_type
-        self.inputs = []
+        # Add elements to canvas
+        for element in self.elements:
+            self.canvas.create_window(10, 10, window=element)
 
-    def create_gate(self, canvas):
-        x = 100
-        y = 100
-        width = 100
-        height = 50
+    def start_drag(self, event):
+        # Get the element being dragged
+        element = event.widget
+        element.x = event.x
+        element.y = event.y
 
-        gate_id = canvas.create_rectangle(x, y, x + width, y + height, fill='white', tags=("movable", "gate"))
-        gate_text_id = canvas.create_text(x + width / 2, y + height / 2, text=self.gate_type, font=('Helvetica', 12), fill='black')
+    def stop_drag(self, event):
+        # Get the element being dragged
+        element = event.widget
+        element.x = event.x
+        element.y = event.y
 
-        for i in range(2):
-            input_id = canvas.create_rectangle(x - 20 - i * 30, y - 20, x - 20 - i * 30 + 10, y, fill='white')
-            self.inputs.append(input_id)
+    def drag(self, event):
+        # Get the element being dragged
+        element = event.widget
+        element.place(x=event.x, y=event.y)
 
-        input_id = canvas.create_rectangle(x + width, y - 20, x + width + 10, y, fill='white')
-        self.inputs.append(input_id)
 
-        canvas.tag_bind(gate_id, "<ButtonPress-1>", self.move_start)
-        canvas.tag_bind(gate_id, "<ButtonRelease-1>", self.move_stop)
-        canvas.tag_bind(gate_id, "<B1-Motion>", self.move)
 
-    def move_start(self, event):
-        DragAndDrop.move_start(event)
+    def create_and_gate(self):
+        and_gate = tk.Label(self.master, text="AND", bg="gray")
+        and_gate.draggable = True
+        and_gate.bind("<ButtonPress-1>", self.start_drag)
+        and_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        and_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(and_gate)
+        self.canvas.create_window(10, 10, window=and_gate)
 
-    def move_stop(self, event):
-        DragAndDrop.move_stop(event)
+    def create_or_gate(self):
+        or_gate = tk.Label(self.master, text="OR", bg="gray")
+        or_gate.draggable = True
+        or_gate.bind("<ButtonPress-1>", self.start_drag)
+        or_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        or_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(or_gate)
+        self.canvas.create_window(10, 10, window=or_gate)
 
-    def move(self, event):
-        DragAndDrop.move(event)
+    def create_not_gate(self):
+        not_gate = tk.Label(self.master, text="NOT", bg="gray")
+        not_gate.draggable = True
+        not_gate.bind("<ButtonPress-1>", self.start_drag)
+        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        not_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(not_gate)
+        self.canvas.create_window(10, 10, window=not_gate)
 
-def main():
-    root = tk.Tk()
-    app = DragAndDrop(root)
-    app.mainloop()
-
-if __name__ == "__main__":
-    main()
+root = tk.Tk()
+drag_and_drop_constructor = DragAndDropConstructor(root)
+root.mainloop()

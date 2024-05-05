@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.filedialog as filedialog
 
 class DragAndDropConstructor:
     def __init__(self, master):
@@ -11,7 +12,7 @@ class DragAndDropConstructor:
 
         self.elements = []
 
-        self.create_draggable_elements()
+     #   self.create_draggable_elements()
 
         self.button_frame = tk.Frame(self.master)
         self.button_frame.pack()
@@ -32,33 +33,44 @@ class DragAndDropConstructor:
         xor_button = tk.Button(button_frame, text="XOR", command=self.create_not_gate)
         xor_button.pack(fill="x")
 
-    def create_draggable_elements(self):
-        # Create draggable elements (e.g. AND, OR, NOT gates)
-        and_gate = tk.Label(self.master, text="AND", bg="white", fg="black")
-        and_gate.draggable = True
-        and_gate.bind("<ButtonPress-1>", self.start_drag)
-        and_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        and_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(and_gate)
 
-        or_gate = tk.Label(self.master, text="OR", bg="white", fg="black")
-        or_gate.draggable = True
-        or_gate.bind("<ButtonPress-1>", self.start_drag)
-        or_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        or_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(or_gate)
+  
+        save_button = tk.Button(button_frame, text="Save", command=self.save_logical_elements)
+        save_button.pack(fill="x")
 
-        not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black")
-        not_gate.draggable = True
-        not_gate.bind("<ButtonPress-1>", self.start_drag)
-        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        not_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(not_gate)
+        open_button = tk.Button(button_frame, text="Open", command=self.open_logical_elements)
+        open_button.pack(fill="x")
 
-        # Add elements to canvas
-        for element in self.elements:
-            self.canvas.create_window(10, 10, window=element)
+        delete_button = tk.Button(self.button_frame, text="Delete", command=self.delete_logical_elements)
+        delete_button.pack(fill="x")
+#===============================================================================
+    # def create_draggable_elements(self):
+    #     # Create draggable elements (e.g. AND, OR, NOT gates)
+    #     and_gate = tk.Label(self.master, text="AND", bg="white", fg="black")
+    #     and_gate.draggable = True
+    #     and_gate.bind("<ButtonPress-1>", self.start_drag)
+    #     and_gate.bind("<ButtonRelease-1>", self.stop_drag)
+    #     and_gate.bind("<B1-Motion>", self.drag)
+    #     self.elements.append(and_gate)
 
+    #     or_gate = tk.Label(self.master, text="OR", bg="white", fg="black")
+    #     or_gate.draggable = True
+    #     or_gate.bind("<ButtonPress-1>", self.start_drag)
+    #     or_gate.bind("<ButtonRelease-1>", self.stop_drag)
+    #     or_gate.bind("<B1-Motion>", self.drag)
+    #     self.elements.append(or_gate)
+
+    #     not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black")
+    #     not_gate.draggable = True
+    #     not_gate.bind("<ButtonPress-1>", self.start_drag)
+    #     not_gate.bind("<ButtonRelease-1>", self.stop_drag)
+    #     not_gate.bind("<B1-Motion>", self.drag)
+    #     self.elements.append(not_gate)
+
+        # # Add elements to canvas
+        # for element in self.elements:
+        #     self.canvas.create_window(10, 10, window=element)
+#============================================================
     def start_drag(self, event):
         # Get the element being dragged
         element = event.widget
@@ -79,7 +91,7 @@ class DragAndDropConstructor:
 
 
     def create_and_gate(self):
-        and_gate = tk.Label(self.master, text="AND", bg="gray")
+        and_gate = tk.Label(self.master, text="AND", bg="white", fg="black")
         and_gate.draggable = True
         and_gate.bind("<ButtonPress-1>", self.start_drag)
         and_gate.bind("<ButtonRelease-1>", self.stop_drag)
@@ -88,7 +100,7 @@ class DragAndDropConstructor:
         self.canvas.create_window(10, 10, window=and_gate)
 
     def create_or_gate(self):
-        or_gate = tk.Label(self.master, text="OR", bg="gray")
+        or_gate = tk.Label(self.master, text="OR", bg="white", fg="black")
         or_gate.draggable = True
         or_gate.bind("<ButtonPress-1>", self.start_drag)
         or_gate.bind("<ButtonRelease-1>", self.stop_drag)
@@ -97,7 +109,7 @@ class DragAndDropConstructor:
         self.canvas.create_window(10, 10, window=or_gate)
 
     def create_not_gate(self):
-        not_gate = tk.Label(self.master, text="NOT", bg="gray")
+        not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black")
         not_gate.draggable = True
         not_gate.bind("<ButtonPress-1>", self.start_drag)
         not_gate.bind("<ButtonRelease-1>", self.stop_drag)
@@ -105,6 +117,33 @@ class DragAndDropConstructor:
         self.elements.append(not_gate)
         self.canvas.create_window(10, 10, window=not_gate)
 
+
+    def save_logical_elements(self):
+        file_path = filedialog.asksaveasfilename(defaultextension=".lgs", filetypes=[ ('C++ files', '*.lgs')])
+        if file_path:
+             with open(file_path, "w") as f:
+                  for element in self.elements:
+                   x, y = element.winfo_x(), element.winfo_y()
+                   f.write(f"{element.cget('text')} {x} {y}\n")
+                   print("Logical scheme saved to logical_scheme.lgs")
+
+    def open_logical_elements(self):
+        file_path = filedialog.askopenfilename(filetypes=[("LGS files", "*.lgs")])
+        if file_path:
+            self.elements = []
+            with open(file_path, "r") as f:
+                for line in f:
+                    text, x, y = line.strip().split()
+                    x, y = int(x), int(y)
+                    element = tk.Label(self.master, text=text, bg="white", fg="black")
+                    element.place(x=x, y=y)
+                    self.elements.append(element)
+
+
+    def delete_logical_elements(self):
+        for element in self.elements:
+            element.destroy()
+        self.elements = []
 root = tk.Tk()
 drag_and_drop_constructor = DragAndDropConstructor(root)
 root.mainloop()
