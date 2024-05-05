@@ -1,6 +1,29 @@
 import tkinter as tk
 import tkinter.filedialog as filedialog
+from PIL import Image, ImageTk
 
+
+
+
+#======================================
+# root = tk.Tk()
+# root.geometry('800x600')
+
+# img = Image.open('Sim.ico')
+# tk_img = ImageTk.PhotoImage(img)
+
+
+# label = tk.Label(root, image=tk_img)
+# label.pack()
+
+
+# root.after(5000, root.destroy)
+
+
+# root.mainloop()
+
+
+#========================================
 class DragAndDropConstructor:
     def __init__(self, master):
         self.master = master
@@ -41,7 +64,7 @@ class DragAndDropConstructor:
         open_button = tk.Button(button_frame, text="Open", command=self.open_logical_elements)
         open_button.pack(fill="x")
 
-        delete_button = tk.Button(self.button_frame, text="Delete", command=self.delete_logical_elements)
+        delete_button = tk.Button(button_frame, text="Delete", command=self.delete_logical_elements)
         delete_button.pack(fill="x")
 #===============================================================================
     # def create_draggable_elements(self):
@@ -119,7 +142,7 @@ class DragAndDropConstructor:
 
 
     def save_logical_elements(self):
-        file_path = filedialog.asksaveasfilename(defaultextension=".lgs", filetypes=[ ('C++ files', '*.lgs')])
+        file_path = filedialog.asksaveasfilename(defaultextension=".lcs", filetypes=[ ('LogicCircuitSimulator', '*.lcs')])
         if file_path:
              with open(file_path, "w") as f:
                   for element in self.elements:
@@ -128,7 +151,7 @@ class DragAndDropConstructor:
                    print("Logical scheme saved to logical_scheme.lgs")
 
     def open_logical_elements(self):
-        file_path = filedialog.askopenfilename(filetypes=[("LGS files", "*.lgs")])
+        file_path = filedialog.askopenfilename(filetypes=[("LogicCircuitSimulator files", "*.lcs")])
         if file_path:
             self.elements = []
             with open(file_path, "r") as f:
@@ -144,6 +167,10 @@ class DragAndDropConstructor:
         for element in self.elements:
             element.destroy()
         self.elements = []
+
+
+
+        
 root = tk.Tk()
 drag_and_drop_constructor = DragAndDropConstructor(root)
 root.mainloop()

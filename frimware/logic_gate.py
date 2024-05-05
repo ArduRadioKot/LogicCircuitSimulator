@@ -1,110 +1,61 @@
-import tkinter as tk
+import copy
 
-class DragAndDropConstructor:
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Logical Scheme Constructor")
-        self.master.geometry("800x600")
-        self.canvas = tk.Canvas(self.master, width=1200, height=1000, bg="gray")
-        self.canvas.pack(side="left")
-        
+class Gate:
+    def __init__(self, inputs=2, output=1, gate_type='and'):
+        self.inputs = inputs
+        self.output = output
+        self.gate_type = gate_type
+        self.connections = {}
 
-        self.elements = []
+    def add_connection(self, input_id, output_gate, output_id):
+        if input_id in self.connections:
+            raise ValueError("Input {} is already connected.".format(input_id))
+        self.connections[input_id] = (output_gate, output_id)
 
-        self.create_draggable_elements()
+    def remove_connection(self, input_id):
+        if input_id not in self.connections:
+            raise ValueError("Input {} is not connected.".format(input_id))
+        del self.connections[input_id]
 
-        self.button_frame = tk.Frame(self.master)
-        self.button_frame.pack()
-        self.add_gate_button()
+    def process(self):
+        output_value = 0
+        for input_id, (output_gate, output_id) in self.connections.items():
+            output_value += output_gate.connections[output_id][0].output
+        if self.gate_type == 'and':
+            return int(output_value > 0)
+        elif self.gate_type == 'or':
+            return int(output_value >= 1)
+        elif self.gate_type == 'xor':
+            return int(output_value == 1)
+        else:
+            raise ValueError("Invalid gate type: {}".format(self.gate_type))
 
+def create_gates():
+    and_gate = Gate(2, 1, 'and')
+    or_gate = Gate(2, 1, 'or')
+    xor_gate = Gate(2, 1, 'xor')
 
+    and_gate.add_connection(0, xor_gate, 0)
+    and_gate.add_connection(1, or_gate, 1)
 
-    def add_gate_button(self):
-        button_frame = tk.Frame(self.master, bg="gray")
-        button_frame.pack(side="right", fill="both", expand=True)
+    or_gate.add_connection(0, and_gate, 0)
+    or_gate.add_connection(1, xor_gate, 1)
 
-        and_button = tk.Button(button_frame, text="AND", command=self.create_and_gate)
-        and_button.pack(fill="x")
+    xor_gate.add_connection(0, or_gate, 0)
+    xor_gate.add_connection(1, and_gate, 1) # corrected line
 
-        or_button = tk.Button(button_frame, text="OR", command=self.create_or_gate)
-        or_button.pack(fill="x")
+    return and_gate, or_gate, xor_gate
 
-        xor_button = tk.Button(button_frame, text="XOR", command=self.create_not_gate)
-        xor_button.pack(fill="x")
+def main():
+    and_gate, or_gate, xor_gate = create_gates()
 
-    def create_draggable_elements(self):
-        # Create draggable elements (e.g. AND, OR, NOT gates)
-        and_gate = tk.Label(self.master, text="AND", bg="white", fg="black")
-        and_gate.draggable = True
-        and_gate.bind("<ButtonPress-1>", self.start_drag)
-        and_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        and_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(and_gate)
+    and_gate.process()
+    or_gate.process()
+    xor_gate.process()
 
-        or_gate = tk.Label(self.master, text="OR", bg="white", fg="black")
-        or_gate.draggable = True
-        or_gate.bind("<ButtonPress-1>", self.start_drag)
-        or_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        or_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(or_gate)
+    print("AND gate output:", and_gate.output)
+    print("OR gate output:", or_gate.output)
+    print("XOR gate output:", xor_gate.output)
 
-        not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black")
-        not_gate.draggable = True
-        not_gate.bind("<ButtonPress-1>", self.start_drag)
-        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        not_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(not_gate)
-
-        # Add elements to canvas
-        for element in self.elements:
-            self.canvas.create_window(10, 10, window=element)
-
-    def start_drag(self, event):
-        # Get the element being dragged
-        element = event.widget
-        element.x = event.x
-        element.y = event.y
-
-    def stop_drag(self, event):
-        # Get the element being dragged
-        element = event.widget
-        element.x = event.x
-        element.y = event.y
-
-    def drag(self, event):
-        # Get the element being dragged
-        element = event.widget
-        element.place(x=event.x, y=event.y)
-
-
-
-    def create_and_gate(self):
-        and_gate = tk.Label(self.master, text="AND", bg="gray")
-        and_gate.draggable = True
-        and_gate.bind("<ButtonPress-1>", self.start_drag)
-        and_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        and_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(and_gate)
-        self.canvas.create_window(10, 10, window=and_gate)
-
-    def create_or_gate(self):
-        or_gate = tk.Label(self.master, text="OR", bg="gray")
-        or_gate.draggable = True
-        or_gate.bind("<ButtonPress-1>", self.start_drag)
-        or_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        or_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(or_gate)
-        self.canvas.create_window(10, 10, window=or_gate)
-
-    def create_not_gate(self):
-        not_gate = tk.Label(self.master, text="NOT", bg="gray")
-        not_gate.draggable = True
-        not_gate.bind("<ButtonPress-1>", self.start_drag)
-        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        not_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(not_gate)
-        self.canvas.create_window(10, 10, window=not_gate)
-
-root = tk.Tk()
-drag_and_drop_constructor = DragAndDropConstructor(root)
-root.mainloop()
+if __name__ == "__main__":
+    main()
