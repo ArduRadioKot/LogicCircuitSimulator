@@ -32,11 +32,10 @@ class DragAndDropConstructor:
         self.canvas = tk.Canvas(self.master, width=1200, height=1000, bg="gray")
         self.canvas.pack(side="left")
         
-
         self.elements = []
-
-     #   self.create_draggable_elements()
-
+        self.trash_zone = tk.Frame(self.master, bg="red", width=200, height=200)
+        self.trash_zone.pack(side="right", fill="both", expand=True)
+        
         self.button_frame = tk.Frame(self.master)
         self.button_frame.pack()
         self.add_gate_button()
@@ -105,6 +104,8 @@ class DragAndDropConstructor:
         element = event.widget
         element.x = event.x
         element.y = event.y
+        if self.is_in_trash_zone(element):
+            self.delete_element(element)
 
     def drag(self, event):
         # Get the element being dragged
@@ -167,6 +168,18 @@ class DragAndDropConstructor:
         for element in self.elements:
             element.destroy()
         self.elements = []
+
+
+    def is_in_trash_zone(self, element):
+        x, y = element.winfo_x(), element.winfo_y()
+        return (x > self.trash_zone.winfo_x() and
+                x < self.trash_zone.winfo_x() + self.trash_zone.winfo_width() and
+                y > self.trash_zone.winfo_y() and
+                y < self.trash_zone.winfo_y() + self.trash_zone.winfo_height())
+
+    def delete_element(self, element):
+        element.destroy()
+        self.elements.remove(element)
 
 
 
