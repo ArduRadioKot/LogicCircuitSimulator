@@ -57,6 +57,9 @@ class DragAndDropConstructor:
         xor_button = tk.Button(button_frame, text="NOT", command=self.create_not_gate)
         xor_button.pack(fill="x")
 
+        xor_button = tk.Button(button_frame, text="XOR", command=self.create_xor_gate)
+        xor_button.pack(fill="x")
+
         save_button = tk.Button(button_frame, text="Save", command=self.save_logical_elements)
         save_button.pack(fill="x")
 
@@ -96,6 +99,15 @@ class DragAndDropConstructor:
         self.elements.append(not_gate)
         self.canvas.create_window(10, 10, window=not_gate)
 
+    def create_xor_gate(self):
+        not_gate = tk.Label(self.master, text="xor", bg="white", fg="black", width=5, height=2)
+        not_gate.draggable = True
+        not_gate.bind("<ButtonPress-1>", self.start_drag)
+        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        not_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(not_gate)
+        self.canvas.create_window(10, 10, window=not_gate)
+
     def start_drag(self, event: tk.Event):
         element = event.widget
         element.x0 = event.x
@@ -119,9 +131,9 @@ class DragAndDropConstructor:
         if file_path:
             with open(file_path, "w") as f:
                 for element in self.elements:
-                    x, y = element.winfo_x(), element.winfo_y()
+                    x, y = element.winfo_rootx(), element.winfo_rooty()
                     f.write(f"{element.cget('text')} {x} {y}\n")
-                    print("Logical scheme saved to logical_scheme.lgs")
+            print("Logical scheme saved to logical_scheme.lgs")
 
     def open_logical_elements(self):
         file_path = filedialog.askopenfilename(filetypes=[("LogicCircuitSimulator files", "*.lcs")])
@@ -131,8 +143,12 @@ class DragAndDropConstructor:
                 for line in f:
                     text, x, y = line.strip().split()
                     x, y = int(x), int(y)
-                    element = tk.Label(self.master, text=text, bg="white", fg="black")
+                    element = tk.Label(self.master, text=text, bg="white", fg="black", width=5, height=2)
                     element.place(x=x, y=y)
+                    element.draggable = True
+                    element.bind("<ButtonPress-1>", self.start_drag)
+                    element.bind("<ButtonRelease-1>", self.stop_drag)
+                    element.bind("<B1-Motion>", self.drag)
                     self.elements.append(element)
 
     def delete_logical_elements(self):
@@ -158,7 +174,7 @@ class DragAndDropConstructor:
         text_editor = ScrolledText(custom_element_window, width=40, height=10)
         text_editor.pack(fill="both", expand=True)
 
-        create_button = tk.Button(custom_element_window, text="Create", command=lambda: self.add_custom_element(text_editor.get("1.0", "end-1c")))
+        create_button = tk.Button(custom_element_window, text="Create", command=lambda: self.add_custom_element(text_editor.get("1.0", "1.0 lineend")))
         create_button.pack()
 
     def add_custom_element(self, element_text: str):
@@ -170,9 +186,7 @@ class DragAndDropConstructor:
         self.elements.append(custom_element)
         self.canvas.create_window(10, 10, window=custom_element)
 
-root = tk.Tk()
-drag_and_drop_constructor = DragAndDropConstructor(root)
-root.mainloop()
+
 
 root = tk.Tk()
 drag_and_drop_constructor = DragAndDropConstructor(root)
