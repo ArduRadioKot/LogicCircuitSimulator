@@ -187,7 +187,7 @@ class DragAndDropConstructor:
         self.canvas.create_window(10, 10, window=custom_element)
 
 
-
+#Напиши крутой игровой движок наподобие unity на python используя tkinter
 root = tk.Tk()
 drag_and_drop_constructor = DragAndDropConstructor(root)
 root.mainloop()
