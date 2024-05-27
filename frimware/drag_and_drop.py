@@ -186,6 +186,18 @@ class DragAndDropConstructor:
         self.elements.append(custom_element)
         self.canvas.create_window(10, 10, window=custom_element)
 
+    # Save the custom element's source code to a separate Python file
+        file_path = filedialog.asksaveasfilename(defaultextension=".py", filetypes=[('Python files', '*.py')])
+        if file_path:
+             with open(file_path, "w") as f:
+                  f.write(f"custom_element = tk.Label(self.master, text='{element_text}', bg='white', fg='black')\n")
+                  f.write("custom_element.draggable = True\n")
+                  f.write("custom_element.bind('<ButtonPress-1>', self.start_drag)\n")
+                  f.write("custom_element.bind('<ButtonRelease-1>', self.stop_drag)\n")
+                  f.write("custom_element.bind('<B1-Motion>', self.drag)\n")
+                  f.write("self.elements.append(custom_element)\n")
+                  f.write("self.canvas.create_window(10, 10, window=custom_element)\n")
+
 
 #Напиши крутой игровой движок наподобие unity на python используя tkinter
 root = tk.Tk()
