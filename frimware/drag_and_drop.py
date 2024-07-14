@@ -167,6 +167,7 @@ class DragAndDropConstructor:
         element.destroy()
         self.elements.remove(element)
 
+
     def create_custom_element(self):
         custom_element_window = tk.Toplevel(self.master)
         custom_element_window.title("Create Custom Logical Element")
@@ -174,18 +175,18 @@ class DragAndDropConstructor:
         text_editor = ScrolledText(custom_element_window, width=40, height=10)
         text_editor.pack(fill="both", expand=True)
 
-        create_button = tk.Button(custom_element_window, text="Create", command=lambda: self.add_custom_element(text_editor.get("1.0", "1.0 lineend")))
+        create_button = tk.Button(custom_element_window, text="Create", command=lambda: self.add_custom_element(text_editor.get("1.0", "end-1c")))
         create_button.pack()
 
     def add_custom_element(self, element_text: str):
-        custom_element = tk.Label(self.master, text=element_text, bg="white", fg="black")
+        custom_element = tk.Text(self.master, width=20, height=5)
+        custom_element.insert("1.0", element_text)
         custom_element.draggable = True
         custom_element.bind("<ButtonPress-1>", self.start_drag)
         custom_element.bind("<ButtonRelease-1>", self.stop_drag)
         custom_element.bind("<B1-Motion>", self.drag)
         self.elements.append(custom_element)
         self.canvas.create_window(10, 10, window=custom_element)
-
     # Save the custom element's source code to a separate Python file
         file_path = filedialog.asksaveasfilename(defaultextension=".py", filetypes=[('Python files', '*.py')])
         if file_path:
