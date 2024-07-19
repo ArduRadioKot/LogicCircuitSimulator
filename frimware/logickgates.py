@@ -28,6 +28,24 @@ class DragAndDropConstructor:
         self.master = master
         self.master.title("Logical Scheme Constructor")
         self.master.geometry("800x600")
+        self.toolbar = tk.Frame(self.master, bg="gray")
+        self.toolbar.pack(fill="x")
+
+        # Кнопка "Открыть файл"
+        self.open_button = tk.Button(self.toolbar, text="Open file", command=self.open_logical_elements)
+        self.open_button.pack(side="left", padx=5, pady=5)
+
+        # Кнопка "Создать файл"
+        self.create_button = tk.Button(self.toolbar, text="Save file", command=self.save_logical_elements)
+        self.create_button.pack(side="left", padx=5, pady=5)
+
+        # Кнопка "Удалить файл"
+        self.delete_button = tk.Button(self.toolbar, text="Settings", command=self.settings)
+        self.delete_button.pack(side="left", padx=5, pady=5)
+
+        self.delete_button = tk.Button(self.toolbar, text="Clear", command=self.delete_logical_elements)
+        self.delete_button.pack(side="left", padx=5, pady=5)
+
         self.canvas = tk.Canvas(self.master, width=1200, height=1000000, bg="gray")
         self.canvas.pack(side="left")
         self.scroll_region = (0, 0, 1000, 1000)  # Set the scroll region to be larger than the canvas size
@@ -43,6 +61,7 @@ class DragAndDropConstructor:
         self.v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.canvas.config(yscrollcommand=self.v_scroll.set)
         self.add_gate_button()
+        
 
     def add_gate_button(self):
         button_frame = tk.Frame(self.master, bg="gray")
@@ -59,15 +78,6 @@ class DragAndDropConstructor:
 
         xor_button = tk.Button(button_frame, text="XOR", command=self.create_xor_gate)
         xor_button.pack(fill="x")
-
-        save_button = tk.Button(button_frame, text="Save", command=self.save_logical_elements)
-        save_button.pack(fill="x")
-
-        open_button = tk.Button(button_frame, text="Open", command=self.open_logical_elements)
-        open_button.pack(fill="x")
-
-        delete_button = tk.Button(button_frame, text="Delete", command=self.delete_logical_elements)
-        delete_button.pack(fill="x")
 
         create_custom_button = tk.Button(button_frame, text="Create Custom Element", command=self.create_custom_element)
         create_custom_button.pack()
@@ -198,6 +208,8 @@ class DragAndDropConstructor:
                   f.write("custom_element.bind('<B1-Motion>', self.drag)\n")
                   f.write("self.elements.append(custom_element)\n")
                   f.write("self.canvas.create_window(10, 10, window=custom_element)\n")
+    def settings(self):
+        pass
 
 
 
