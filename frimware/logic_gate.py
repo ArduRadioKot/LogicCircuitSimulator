@@ -42,6 +42,7 @@ def create_gates():
     or_gate.add_connection(1, xor_gate, 1)
 
     xor_gate.add_connection(0, or_gate, 0)
+    xor_gate.add_connection(1, and_gate, 1) # corrected line
 
     return and_gate, or_gate, xor_gate
 
