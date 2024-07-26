@@ -208,9 +208,44 @@ class DragAndDropConstructor:
                   f.write("custom_element.bind('<B1-Motion>', self.drag)\n")
                   f.write("self.elements.append(custom_element)\n")
                   f.write("self.canvas.create_window(10, 10, window=custom_element)\n")
-    def settings(self):
-        pass
 
+    def settings(self):
+        settings_window = tk.Toplevel(self.master)
+        settings_window.title("Settings")
+
+        # Theme selection
+        tk.Label(settings_window, text="Theme:").pack()
+        theme_var = tk.StringVar()
+        theme_var.set("Default")  # default theme
+        theme_options = ["Default", "Dark", "Light", "Custom"]
+        theme_menu = tk.OptionMenu(settings_window, theme_var, *theme_options)
+        theme_menu.pack()
+
+        # Apply theme button
+        def apply_theme():
+            theme = theme_var.get()
+            if theme == "Dark":
+                self.master.configure(bg="gray")
+                self.toolbar.configure(bg="#153b25")
+                self.canvas.configure(bg="#323d36")
+
+            elif theme == "Light":
+                self.master.configure(bg="white")
+                self.toolbar.configure(bg="#24663f")
+                self.canvas.configure(bg="#597565")
+           
+            elif theme == "Custom":
+                # Add custom theme options here
+                pass
+            else:
+                self.master.configure(bg="SystemButtonFace")
+                self.toolbar.configure(bg="SystemButtonFace")
+                self.canvas.configure(bg="SystemButtonFace")
+                
+
+        tk.Button(settings_window, text="Apply", command=apply_theme).pack()
+
+        tk.Button(settings_window, text="OK", command=settings_window.destroy).pack()
 
 
 root = tk.Tk()
