@@ -26,6 +26,7 @@ from tkinter.scrolledtext import ScrolledText
 class DragAndDropConstructor:
     def __init__(self, master: tk.Tk):
         self.master = master
+        self.root = master
         self.master.title("Logical Scheme Constructor")
         self.master.geometry("800x600")
         self.toolbar = tk.Frame(self.master, bg="gray")
@@ -46,6 +47,9 @@ class DragAndDropConstructor:
         self.delete_button = tk.Button(self.toolbar, text="Clear", command=self.delete_logical_elements)
         self.delete_button.pack(side="left", padx=5, pady=5)
 
+        self.delete_button = tk.Button(self.toolbar, text="Quit", command=quit)
+        self.delete_button.pack(side="left", padx=5, pady=5)
+
         self.canvas = tk.Canvas(self.master, width=1200, height=1000000, bg="gray")
         self.canvas.pack(side="left")
         self.scroll_region = (0, 0, 1000, 1000)  # Set the scroll region to be larger than the canvas size
@@ -61,6 +65,9 @@ class DragAndDropConstructor:
         self.v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.canvas.config(yscrollcommand=self.v_scroll.set)
         self.add_gate_button()
+
+    def quit(self):
+        self.root.destroy
         
 
     def add_gate_button(self):
