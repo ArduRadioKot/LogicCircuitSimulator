@@ -226,13 +226,13 @@ class DragAndDropConstructor:
             theme = theme_var.get()
             if theme == "Dark":
                 self.master.configure(bg="gray")
-                self.toolbar.configure(bg="#153b25")
-                self.canvas.configure(bg="#323d36")
+                self.toolbar.configure(bg="#15294a")
+                self.canvas.configure(bg="#2d3d52")
 
             elif theme == "Light":
                 self.master.configure(bg="white")
-                self.toolbar.configure(bg="#24663f")
-                self.canvas.configure(bg="#597565")
+                self.toolbar.configure(bg="#244275")
+                self.canvas.configure(bg="#6d90bd")
            
             elif theme == "Custom":
                 # Add custom theme options here
