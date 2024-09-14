@@ -81,14 +81,28 @@ class DragAndDropConstructor:
         self.elements.append(and_gate)
         self.canvas.create_window(10, 10, window=and_gate)
 
+        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
+        input1_label.place(x=10, y=30)
+        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
+        input2_label.place(x=10, y=50)
+        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
+        output_label.place(x=10, y=70)
+
     def create_or_gate(self):
         or_gate = tk.Label(self.master, text="OR", bg="white", fg="black", width=5, height=2)
         or_gate.draggable = True
-        or_gate.bind("<ButtonPress-1>",self.start_drag)
+        or_gate.bind("<ButtonPress-1>", self.start_drag)
         or_gate.bind("<ButtonRelease-1>", self.stop_drag)
         or_gate.bind("<B1-Motion>", self.drag)
         self.elements.append(or_gate)
         self.canvas.create_window(10, 10, window=or_gate)
+
+        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
+        input1_label.place(x=10, y=30)
+        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
+        input2_label.place(x=10, y=50)
+        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
+        output_label.place(x=10, y=70)
 
     def create_not_gate(self):
         not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black", width=5, height=2)
@@ -99,14 +113,28 @@ class DragAndDropConstructor:
         self.elements.append(not_gate)
         self.canvas.create_window(10, 10, window=not_gate)
 
+        input1_label = tk.Label(self.master, text="In", bg="white", fg="black", width=2, height=1)
+        input1_label.place(x=10, y=30)
+        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
+        output_label.place(x=10, y=50)
+
     def create_xor_gate(self):
-        not_gate = tk.Label(self.master, text="xor", bg="white", fg="black", width=5, height=2)
-        not_gate.draggable = True
-        not_gate.bind("<ButtonPress-1>", self.start_drag)
-        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        not_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(not_gate)
-        self.canvas.create_window(10, 10, window=not_gate)
+        xor_gate = tk.Label(self.master, text="XOR", bg="white", fg="black", width=5, height=2)
+        xor_gate.draggable = True
+        xor_gate.bind("<ButtonPress-1>", self.start_drag)
+        xor_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        xor_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(xor_gate)
+        self.canvas.create_window(10, 10, window=xor_gate)
+
+        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
+        input1_label.place(x=10, y=30)
+        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
+        input2_label.place(x=10, y=50)
+        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
+        output_label.place(x=10, y=70)
+
+
 
     def start_drag(self, event: tk.Event):
         element = event.widget
@@ -186,17 +214,24 @@ class DragAndDropConstructor:
         self.elements.append(custom_element)
         self.canvas.create_window(10, 10, window=custom_element)
 
-    # Save the custom element's source code to a separate Python file
+        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
+        input1_label.place(x=10, y=30)
+        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
+        input2_label.place(x=10, y=50)
+        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
+        output_label.place(x=10, y=70)
+
+        # Save the custom element's source code to a separate Python file
         file_path = filedialog.asksaveasfilename(defaultextension=".py", filetypes=[('Python files', '*.py')])
         if file_path:
-             with open(file_path, "w") as f:
-                  f.write(f"custom_element = tk.Label(self.master, text='{element_text}', bg='white', fg='black')\n")
-                  f.write("custom_element.draggable = True\n")
-                  f.write("custom_element.bind('<ButtonPress-1>', self.start_drag)\n")
-                  f.write("custom_element.bind('<ButtonRelease-1>', self.stop_drag)\n")
-                  f.write("custom_element.bind('<B1-Motion>', self.drag)\n")
-                  f.write("self.elements.append(custom_element)\n")
-                  f.write("self.canvas.create_window(10, 10, window=custom_element)\n")
+            with open(file_path, "w") as f:
+                f.write(f"custom_element = tk.Label(self.master, text='{element_text}', bg='white', fg='black')\n")
+                f.write("custom_element.draggable = True\n")
+                f.write("custom_element.bind('<ButtonPress-1>', self.start_drag)\n")
+                f.write("custom_element.bind('<ButtonRelease-1>', self.stop_drag)\n")
+                f.write("custom_element.bind('<B1-Motion>', self.drag)\n")
+                f.write("self.elements.append(custom_element)\n")
+                f.write("self.canvas.create_window(10, 10, window=custom_element)\n")
 
 
 #Напиши крутой игровой движок наподобие unity на python используя tkinter
