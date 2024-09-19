@@ -65,6 +65,20 @@ class DragAndDropConstructor:
         self.v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.canvas.config(yscrollcommand=self.v_scroll.set)
         self.add_gate_button()
+        self.add_input_device_button()
+
+    def add_input_device_button(self):
+        input_device_button = tk.Button(self.button_frame, text="Input Device", command=self.create_input_device)
+        input_device_button.pack(fill="x")
+
+    def create_input_device(self):
+        input_device = tk.Label(self.master, text="Input", bg="white", fg="black", width=5, height=2)
+        input_device.draggable = True
+        input_device.bind("<ButtonPress-1>", self.start_drag)
+        input_device.bind("<ButtonRelease-1>", self.stop_drag)
+        input_device.bind("<B1-Motion>", self.drag)
+        self.elements.append(input_device)
+        self.canvas.create_window(10, 10, window=input_device)
 
     def quit(self):
         self.root.destroy

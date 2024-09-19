@@ -26,8 +26,30 @@ from tkinter.scrolledtext import ScrolledText
 class DragAndDropConstructor:
     def __init__(self, master: tk.Tk):
         self.master = master
+        self.root = master
         self.master.title("Logical Scheme Constructor")
         self.master.geometry("800x600")
+        self.toolbar = tk.Frame(self.master, bg="gray")
+        self.toolbar.pack(fill="x")
+
+        # Кнопка "Открыть файл"
+        self.open_button = tk.Button(self.toolbar, text="Open file", command=self.open_logical_elements)
+        self.open_button.pack(side="left", padx=5, pady=5)
+
+        # Кнопка "Создать файл"
+        self.create_button = tk.Button(self.toolbar, text="Save file", command=self.save_logical_elements)
+        self.create_button.pack(side="left", padx=5, pady=5)
+
+        # Кнопка "Удалить файл"
+        self.delete_button = tk.Button(self.toolbar, text="Settings", command=self.settings)
+        self.delete_button.pack(side="left", padx=5, pady=5)
+
+        self.delete_button = tk.Button(self.toolbar, text="Clear", command=self.delete_logical_elements)
+        self.delete_button.pack(side="left", padx=5, pady=5)
+
+        self.delete_button = tk.Button(self.toolbar, text="Quit", command=quit)
+        self.delete_button.pack(side="left", padx=5, pady=5)
+
         self.canvas = tk.Canvas(self.master, width=1200, height=1000000, bg="gray")
         self.canvas.pack(side="left")
         self.scroll_region = (0, 0, 1000, 1000)  # Set the scroll region to be larger than the canvas size
@@ -43,6 +65,24 @@ class DragAndDropConstructor:
         self.v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.canvas.config(yscrollcommand=self.v_scroll.set)
         self.add_gate_button()
+        self.add_input_device_button()
+
+    def add_input_device_button(self):
+        input_device_button = tk.Button(self.button_frame, text="Input Device", command=self.create_input_device)
+        input_device_button.pack(fill="x")
+
+    def create_input_device(self):
+        input_device = tk.Label(self.master, text="Input", bg="white", fg="black", width=5, height=2)
+        input_device.draggable = True
+        input_device.bind("<ButtonPress-1>", self.start_drag)
+        input_device.bind("<ButtonRelease-1>", self.stop_drag)
+        input_device.bind("<B1-Motion>", self.drag)
+        self.elements.append(input_device)
+        self.canvas.create_window(10, 10, window=input_device)
+
+    def quit(self):
+        self.root.destroy
+        
 
     def add_gate_button(self):
         button_frame = tk.Frame(self.master, bg="gray")
@@ -60,15 +100,6 @@ class DragAndDropConstructor:
         xor_button = tk.Button(button_frame, text="XOR", command=self.create_xor_gate)
         xor_button.pack(fill="x")
 
-        save_button = tk.Button(button_frame, text="Save", command=self.save_logical_elements)
-        save_button.pack(fill="x")
-
-        open_button = tk.Button(button_frame, text="Open", command=self.open_logical_elements)
-        open_button.pack(fill="x")
-
-        delete_button = tk.Button(button_frame, text="Delete", command=self.delete_logical_elements)
-        delete_button.pack(fill="x")
-
         create_custom_button = tk.Button(button_frame, text="Create Custom Element", command=self.create_custom_element)
         create_custom_button.pack()
 
@@ -81,28 +112,14 @@ class DragAndDropConstructor:
         self.elements.append(and_gate)
         self.canvas.create_window(10, 10, window=and_gate)
 
-        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
-        input1_label.place(x=10, y=30)
-        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
-        input2_label.place(x=10, y=50)
-        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
-        output_label.place(x=10, y=70)
-
     def create_or_gate(self):
         or_gate = tk.Label(self.master, text="OR", bg="white", fg="black", width=5, height=2)
         or_gate.draggable = True
-        or_gate.bind("<ButtonPress-1>", self.start_drag)
+        or_gate.bind("<ButtonPress-1>",self.start_drag)
         or_gate.bind("<ButtonRelease-1>", self.stop_drag)
         or_gate.bind("<B1-Motion>", self.drag)
         self.elements.append(or_gate)
         self.canvas.create_window(10, 10, window=or_gate)
-
-        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
-        input1_label.place(x=10, y=30)
-        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
-        input2_label.place(x=10, y=50)
-        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
-        output_label.place(x=10, y=70)
 
     def create_not_gate(self):
         not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black", width=5, height=2)
@@ -113,28 +130,14 @@ class DragAndDropConstructor:
         self.elements.append(not_gate)
         self.canvas.create_window(10, 10, window=not_gate)
 
-        input1_label = tk.Label(self.master, text="In", bg="white", fg="black", width=2, height=1)
-        input1_label.place(x=10, y=30)
-        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
-        output_label.place(x=10, y=50)
-
     def create_xor_gate(self):
-        xor_gate = tk.Label(self.master, text="XOR", bg="white", fg="black", width=5, height=2)
-        xor_gate.draggable = True
-        xor_gate.bind("<ButtonPress-1>", self.start_drag)
-        xor_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        xor_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(xor_gate)
-        self.canvas.create_window(10, 10, window=xor_gate)
-
-        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
-        input1_label.place(x=10, y=30)
-        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
-        input2_label.place(x=10, y=50)
-        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
-        output_label.place(x=10, y=70)
-
-
+        not_gate = tk.Label(self.master, text="xor", bg="white", fg="black", width=5, height=2)
+        not_gate.draggable = True
+        not_gate.bind("<ButtonPress-1>", self.start_drag)
+        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        not_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(not_gate)
+        self.canvas.create_window(10, 10, window=not_gate)
 
     def start_drag(self, event: tk.Event):
         element = event.widget
@@ -195,6 +198,7 @@ class DragAndDropConstructor:
         element.destroy()
         self.elements.remove(element)
 
+
     def create_custom_element(self):
         custom_element_window = tk.Toplevel(self.master)
         custom_element_window.title("Create Custom Logical Element")
@@ -202,39 +206,69 @@ class DragAndDropConstructor:
         text_editor = ScrolledText(custom_element_window, width=40, height=10)
         text_editor.pack(fill="both", expand=True)
 
-        create_button = tk.Button(custom_element_window, text="Create", command=lambda: self.add_custom_element(text_editor.get("1.0", "1.0 lineend")))
+        create_button = tk.Button(custom_element_window, text="Create", command=lambda: self.add_custom_element(text_editor.get("1.0", "end-1c")))
         create_button.pack()
 
     def add_custom_element(self, element_text: str):
-        custom_element = tk.Label(self.master, text=element_text, bg="white", fg="black")
+        custom_element = tk.Text(self.master, width=20, height=5)
+        custom_element.insert("1.0", element_text)
         custom_element.draggable = True
         custom_element.bind("<ButtonPress-1>", self.start_drag)
         custom_element.bind("<ButtonRelease-1>", self.stop_drag)
         custom_element.bind("<B1-Motion>", self.drag)
         self.elements.append(custom_element)
         self.canvas.create_window(10, 10, window=custom_element)
-
-        input1_label = tk.Label(self.master, text="In1", bg="white", fg="black", width=2, height=1)
-        input1_label.place(x=10, y=30)
-        input2_label = tk.Label(self.master, text="In2", bg="white", fg="black", width=2, height=1)
-        input2_label.place(x=10, y=50)
-        output_label = tk.Label(self.master, text="Out", bg="white", fg="black", width=2, height=1)
-        output_label.place(x=10, y=70)
-
-        # Save the custom element's source code to a separate Python file
+    # Save the custom element's source code to a separate Python file
         file_path = filedialog.asksaveasfilename(defaultextension=".py", filetypes=[('Python files', '*.py')])
         if file_path:
-            with open(file_path, "w") as f:
-                f.write(f"custom_element = tk.Label(self.master, text='{element_text}', bg='white', fg='black')\n")
-                f.write("custom_element.draggable = True\n")
-                f.write("custom_element.bind('<ButtonPress-1>', self.start_drag)\n")
-                f.write("custom_element.bind('<ButtonRelease-1>', self.stop_drag)\n")
-                f.write("custom_element.bind('<B1-Motion>', self.drag)\n")
-                f.write("self.elements.append(custom_element)\n")
-                f.write("self.canvas.create_window(10, 10, window=custom_element)\n")
+             with open(file_path, "w") as f:
+                  f.write(f"custom_element = tk.Label(self.master, text='{element_text}', bg='white', fg='black')\n")
+                  f.write("custom_element.draggable = True\n")
+                  f.write("custom_element.bind('<ButtonPress-1>', self.start_drag)\n")
+                  f.write("custom_element.bind('<ButtonRelease-1>', self.stop_drag)\n")
+                  f.write("custom_element.bind('<B1-Motion>', self.drag)\n")
+                  f.write("self.elements.append(custom_element)\n")
+                  f.write("self.canvas.create_window(10, 10, window=custom_element)\n")
+
+    def settings(self):
+        settings_window = tk.Toplevel(self.master)
+        settings_window.title("Settings")
+
+        # Theme selection
+        tk.Label(settings_window, text="Theme:").pack()
+        theme_var = tk.StringVar()
+        theme_var.set("Default")  # default theme
+        theme_options = ["Default", "Dark", "Light", "Custom"]
+        theme_menu = tk.OptionMenu(settings_window, theme_var, *theme_options)
+        theme_menu.pack()
+
+        # Apply theme button
+        def apply_theme():
+            theme = theme_var.get()
+            if theme == "Dark":
+                self.master.configure(bg="gray")
+                self.toolbar.configure(bg="#15294a")
+                self.canvas.configure(bg="#2d3d52")
+
+            elif theme == "Light":
+                self.master.configure(bg="white")
+                self.toolbar.configure(bg="#244275")
+                self.canvas.configure(bg="#6d90bd")
+           
+            elif theme == "Custom":
+                # Add custom theme options here
+                pass
+            else:
+                self.master.configure(bg="SystemButtonFace")
+                self.toolbar.configure(bg="SystemButtonFace")
+                self.canvas.configure(bg="SystemButtonFace")
+                
+
+        tk.Button(settings_window, text="Apply", command=apply_theme).pack()
+
+        tk.Button(settings_window, text="OK", command=settings_window.destroy).pack()
 
 
-#Напиши крутой игровой движок наподобие unity на python используя tkinter
 root = tk.Tk()
 drag_and_drop_constructor = DragAndDropConstructor(root)
 root.mainloop()
