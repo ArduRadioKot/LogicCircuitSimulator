@@ -72,13 +72,27 @@ class DragAndDropConstructor:
         input_device_button.pack(fill="x")
 
     def create_input_device(self):
-        input_device = tk.Label(self.master, text="Input", bg="white", fg="black", width=5, height=2)
+        input_device = tk.Frame(self.master, width=40, height=40, bg="white")  # Create a frame instead of a label
         input_device.draggable = True
         input_device.bind("<ButtonPress-1>", self.start_drag)
         input_device.bind("<ButtonRelease-1>", self.stop_drag)
         input_device.bind("<B1-Motion>", self.drag)
         self.elements.append(input_device)
         self.canvas.create_window(10, 10, window=input_device)
+
+        # Create two input ports on the left side
+        input_port1 = tk.Canvas(input_device, width=10, height=10, bg="gray")
+        input_port1.place(x=0, y=10)  # top-left corner
+        input_port2 = tk.Canvas(input_device, width=10, height=10, bg="gray")
+        input_port2.place(x=0, y=30)  # bottom-left corner
+
+        # Create one output port on the right side
+        output_port = tk.Canvas(input_device, width=10, height=10, bg="gray")
+        output_port.place(x=30, y=20)  # middle-right
+
+        # Add text to the frame
+        input_text = tk.Label(input_device, text="Input", bg="white", fg="black")
+        input_text.place(x=10, y=15)
 
     def quit(self):
         self.root.destroy
@@ -104,7 +118,7 @@ class DragAndDropConstructor:
         create_custom_button.pack()
 
     def create_and_gate(self):
-        and_gate = tk.Label(self.master, text="AND", bg="white", fg="black", width=5, height=2)
+        and_gate = tk.Frame(self.master, width=60, height=40, bg="white")  # Create a frame instead of a label
         and_gate.draggable = True
         and_gate.bind("<ButtonPress-1>", self.start_drag)
         and_gate.bind("<ButtonRelease-1>", self.stop_drag)
@@ -112,33 +126,86 @@ class DragAndDropConstructor:
         self.elements.append(and_gate)
         self.canvas.create_window(10, 10, window=and_gate)
 
+        # Create two input ports on the left side
+        input_port1 = tk.Canvas(and_gate, width=10, height=10, bg="gray")
+        input_port1.place(x=0, y=10)  # top-left corner
+        input_port2 = tk.Canvas(and_gate, width=10, height=10, bg="gray")
+        input_port2.place(x=0, y=30)  # bottom-left corner
+
+        # Create one output port on the right side
+        output_port = tk.Canvas(and_gate, width=10, height=10, bg="gray")
+        output_port.place(x=50, y=20)  # middle-right
+
+        # Add text to the frame
+        and_text = tk.Label(and_gate, text="AND", bg="white", fg="black")
+        and_text.place(x=10, y=15)
+
     def create_or_gate(self):
-        or_gate = tk.Label(self.master, text="OR", bg="white", fg="black", width=5, height=2)
+        or_gate = tk.Frame(self.master, width=60, height=40, bg="white")
         or_gate.draggable = True
-        or_gate.bind("<ButtonPress-1>",self.start_drag)
+        or_gate.bind("<ButtonPress-1>", self.start_drag)
         or_gate.bind("<ButtonRelease-1>", self.stop_drag)
         or_gate.bind("<B1-Motion>", self.drag)
         self.elements.append(or_gate)
         self.canvas.create_window(10, 10, window=or_gate)
 
+        # Create two input ports on the left side
+        input_port1 = tk.Canvas(or_gate, width=10, height=10, bg="gray")
+        input_port1.place(x=0, y=10)  # top-left corner
+        input_port2 = tk.Canvas(or_gate, width=10, height=10, bg="gray")
+        input_port2.place(x=0, y=30)  # bottom-left corner
+
+        # Create one output port on the right side
+        output_port = tk.Canvas(or_gate, width=10, height=10, bg="gray")
+        output_port.place(x=50, y=20)  # middle-right
+
+        # Add text to the frame
+        or_text = tk.Label(or_gate, text="OR", bg="white", fg="black")
+        or_text.place(x=10, y=15)
+
     def create_not_gate(self):
-        not_gate = tk.Label(self.master, text="NOT", bg="white", fg="black", width=5, height=2)
+        not_gate = tk.Frame(self.master, width=40, height=40, bg="white")
         not_gate.draggable = True
         not_gate.bind("<ButtonPress-1>", self.start_drag)
         not_gate.bind("<ButtonRelease-1>", self.stop_drag)
         not_gate.bind("<B1-Motion>", self.drag)
         self.elements.append(not_gate)
         self.canvas.create_window(10, 10, window=not_gate)
+
+        # Create one input port on the left side
+        input_port = tk.Canvas(not_gate, width=10, height=10, bg="gray")
+        input_port.place(x=0, y=20)  # middle-left
+
+        # Create one output port on the right side
+        output_port = tk.Canvas(not_gate, width=10, height=10, bg="gray")
+        output_port.place(x=30, y=20)  # middle-right
+
+        # Add text to the frame
+        not_text = tk.Label(not_gate, text="NOT", bg="white", fg="black")
+        not_text.place(x=5, y=15)
 
     def create_xor_gate(self):
-        not_gate = tk.Label(self.master, text="xor", bg="white", fg="black", width=5, height=2)
-        not_gate.draggable = True
-        not_gate.bind("<ButtonPress-1>", self.start_drag)
-        not_gate.bind("<ButtonRelease-1>", self.stop_drag)
-        not_gate.bind("<B1-Motion>", self.drag)
-        self.elements.append(not_gate)
-        self.canvas.create_window(10, 10, window=not_gate)
+        xor_gate = tk.Frame(self.master, width=60, height=40, bg="white")
+        xor_gate.draggable = True
+        xor_gate.bind("<ButtonPress-1>", self.start_drag)
+        xor_gate.bind("<ButtonRelease-1>", self.stop_drag)
+        xor_gate.bind("<B1-Motion>", self.drag)
+        self.elements.append(xor_gate)
+        self.canvas.create_window(10, 10, window=xor_gate)
 
+        # Create two input ports on the left side
+        input_port1 = tk.Canvas(xor_gate, width=10, height=10, bg="gray")
+        input_port1.place(x=0, y=10)  # top-left corner
+        input_port2 = tk.Canvas(xor_gate, width=10, height=10, bg="gray")
+        input_port2.place(x=0, y=30)  # bottom-left corner
+
+        # Create one output port on the right side
+        output_port = tk.Canvas(xor_gate, width=10, height=10, bg="gray")
+        output_port.place(x=50, y=20)  # middle-right
+
+        # Add text to the frame
+        xor_text = tk.Label(xor_gate, text="XOR", bg="white", fg="black")
+        xor_text.place(x=10, y=15)
     def start_drag(self, event: tk.Event):
         element = event.widget
         element.x0 = event.x
@@ -163,7 +230,7 @@ class DragAndDropConstructor:
             with open(file_path, "w") as f:
                 for element in self.elements:
                     x, y = element.winfo_rootx(), element.winfo_rooty()
-                    f.write(f"{element.cget('text')} {x} {y}\n")
+                    f.write(f"{element.winfo_children()[0].cget('text')} {x} {y}\n")  # Get the text from the label inside the frame
             print("Logical scheme saved to logical_scheme.lgs")
 
     def open_logical_elements(self):
@@ -174,13 +241,121 @@ class DragAndDropConstructor:
                 for line in f:
                     text, x, y = line.strip().split()
                     x, y = int(x), int(y)
-                    element = tk.Label(self.master, text=text, bg="white", fg="black", width=5, height=2)
-                    element.place(x=x, y=y)
-                    element.draggable = True
-                    element.bind("<ButtonPress-1>", self.start_drag)
-                    element.bind("<ButtonRelease-1>", self.stop_drag)
-                    element.bind("<B1-Motion>", self.drag)
-                    self.elements.append(element)
+                    if text == "Input":
+                        element = tk.Frame(self.master, width=40, height=40, bg="white")  
+                        element.place(x=x, y=y)
+                        element.draggable = True
+                        element.bind("<ButtonPress-1>", self.start_drag)
+                        element.bind("<ButtonRelease-1>", self.stop_drag)
+                        element.bind("<B1-Motion>", self.drag)
+                        
+                        # Create two input ports on the left side
+                        input_port1 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port1.place(x=0, y=10)  # top-left corner
+                        input_port2 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port2.place(x=0, y=30)  # bottom-left corner
+
+                        # Create one output port on the right side
+                        output_port = tk.Canvas(element, width=10, height=10, bg="gray")
+                        output_port.place(x=30, y=20)  # middle-right
+
+                        # Add text to the frame
+                        input_text = tk.Label(element, text="Input", bg="white", fg="black")
+                        input_text.place(x=10, y=15)
+
+                        self.elements.append(element)
+
+                    elif text == "AND":
+                        element = tk.Frame(self.master, width=60, height=40, bg="white")
+                        element.place(x=x, y=y)
+                        element.draggable = True
+                        element.bind("<ButtonPress-1>", self.start_drag)
+                        element.bind("<ButtonRelease-1>", self.stop_drag)
+                        element.bind("<B1-Motion>", self.drag)
+                        
+                        # Create two input ports on the left side
+                        input_port1 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port1.place(x=0, y=10)  # top-left corner
+                        input_port2 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port2.place(x=0, y=30)  # bottom-left corner
+
+                        # Create one output port on the right side
+                        output_port = tk.Canvas(element, width=10, height=10, bg="gray")
+                        output_port.place(x=50, y=20)  # middle-right
+
+                        # Add text to the frame
+                        and_text = tk.Label(element, text="AND", bg="white", fg="black")
+                        and_text.place(x=10, y=15)
+
+                        self.elements.append(element)
+
+                    elif text == "OR":
+                        element = tk.Frame(self.master, width=60, height=40, bg="white")
+                        element.place(x=x, y=y)
+                        element.draggable = True
+                        element.bind("<ButtonPress-1>", self.start_drag)
+                        element.bind("<ButtonRelease-1>", self.stop_drag)
+                        element.bind("<B1-Motion>", self.drag)
+                        
+                        # Create two input ports on the left side
+                        input_port1 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port1.place(x=0, y=10)  # top-left corner
+                        input_port2 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port2.place(x=0, y=30)  # bottom-left corner
+
+                        # Create one output port on the right side
+                        output_port = tk.Canvas(element, width=10, height=10, bg="gray")
+                        output_port.place(x=50, y=20)  # middle-right
+
+                        # Add text to the frame
+                        or_text = tk.Label(element, text="OR", bg="white", fg="black")
+                        or_text.place(x=10, y=15)
+
+                        self.elements.append(element)
+                    elif text == "NOT":
+                        element = tk.Frame(self.master, width=40, height=40, bg="white")
+                        element.place(x=x, y=y)
+                        element.draggable = True
+                        element.bind("<ButtonPress-1>", self.start_drag)
+                        element.bind("<ButtonRelease-1>", self.stop_drag)
+                        element.bind("<B1-Motion>", self.drag)
+                        
+                        # Create one input port on the left side
+                        input_port = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port.place(x=0, y=20)  # middle-left
+
+                        # Create one output port on the right side
+                        output_port = tk.Canvas(element, width=10, height=10, bg="gray")
+                        output_port.place(x=30, y=20)  # middle-right
+
+                        # Add text to the frame
+                        not_text = tk.Label(element, text="NOT", bg="white", fg="black")
+                        not_text.place(x=5, y=15)
+
+                        self.elements.append(element)
+                    elif text == "XOR":
+                        element = tk.Frame(self.master, width=60, height=40, bg="white")
+                        element.place(x=x, y=y)
+                        element.draggable = True
+                        element.bind("<ButtonPress-1>", self.start_drag)
+                        element.bind("<ButtonRelease-1>", self.stop_drag)
+                        element.bind("<B1-Motion>", self.drag)
+                        
+                        # Create two input ports on the left side
+                        input_port1 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port1.place(x=0, y=10)  # top-left corner
+                        input_port2 = tk.Canvas(element, width=10, height=10, bg="gray")
+                        input_port2.place(x=0, y=30)  # bottom-left corner
+
+                        # Create one output port on the right side
+                        output_port = tk.Canvas(element, width=10, height=10, bg="gray")
+                        output_port.place(x=50, y=20)  # middle-right
+
+                        # Add text to the frame
+                        xor_text = tk.Label(element, text="XOR", bg="white", fg="black")
+                        xor_text.place(x=10, y=15)
+
+                        self.elements.append(element)
 
     def delete_logical_elements(self):
         for element in self.elements:
