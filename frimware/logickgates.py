@@ -429,7 +429,7 @@ class DragAndDropConstructor:
                 self.master.configure(bg="white")
                 self.toolbar.configure(bg="#244275")
                 self.canvas.configure(bg="#6d90bd")
-           
+        
             elif theme == "Custom":
                 # Add custom theme options here
                 pass
