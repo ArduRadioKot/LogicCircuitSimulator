@@ -500,18 +500,11 @@ class LogicCircuitSimulator:
         if not self.simulation_mode:
             return
 
-        # Сначала сбрасываем все значения и внешний вид элементов
-        for element in self.elements:
-            if element.element_type != "INPUT":
-                element.value = False
-                if element.element_type == "OUTPUT":
-                    self.canvas.itemconfig(element.rect, fill="white", outline="black")
-                    self.canvas.itemconfig(element.text, fill="black")
-                else:
-                    self.canvas.itemconfig(element.output, fill="gray")
-
         # Создаем словарь для хранения входных значений каждого элемента
         input_values = {element: [] for element in self.elements}
+        
+        # Создаем словарь для хранения выходных значений каждого элемента
+        output_values = {element: element.value for element in self.elements}
 
         # Собираем все входные значения для каждого элемента
         for conn in self.connections:
@@ -529,7 +522,7 @@ class LogicCircuitSimulator:
                     end_element = element
                     
             if start_element and end_element:
-                input_values[end_element].append(start_element.value)
+                input_values[end_element].append(output_values[start_element])
 
         # Обрабатываем каждый элемент
         for element in self.elements:
@@ -555,6 +548,9 @@ class LogicCircuitSimulator:
                 else:
                     element.value = False
 
+            # Обновляем выходное значение в словаре
+            output_values[element] = element.value
+
             # Обновляем визуальное состояние элемента
             if element.element_type == "OUTPUT":
                 if element.value:
@@ -569,32 +565,6 @@ class LogicCircuitSimulator:
                 # Для логических элементов обновляем цвет выходного порта
                 color = "green" if element.value else "gray"
                 self.canvas.itemconfig(element.output, fill=color)
-
-        # Проверяем все соединения и обновляем значения
-        for conn in self.connections:
-            start_port = conn[1]
-            end_port = conn[2]
-            
-            # Находим элементы, соединенные через эти порты
-            start_element = None
-            end_element = None
-            
-            for element in self.elements:
-                if start_port == element.output:
-                    start_element = element
-                if end_port in element.inputs:
-                    end_element = element
-                    
-            if start_element and end_element:
-                # Если конечный элемент - светодиод, обновляем его состояние
-                if end_element.element_type == "OUTPUT":
-                    end_element.value = start_element.value
-                    if end_element.value:
-                        self.canvas.itemconfig(end_element.rect, fill="red", outline="red")
-                        self.canvas.itemconfig(end_element.text, fill="white")
-                    else:
-                        self.canvas.itemconfig(end_element.rect, fill="white", outline="black")
-                        self.canvas.itemconfig(end_element.text, fill="black")
 
     def new_scheme(self):
         if messagebox.askyesno("New Scheme", "Clear current scheme?"):
