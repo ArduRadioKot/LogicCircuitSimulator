@@ -1,4 +1,5 @@
 # Logic Circuit Simulator
+![EN README](README.md) | ![RU README](READMERU.md)
 
 A powerful and intuitive graphical logic circuit simulator built with Python and Tkinter. This application allows users to design, simulate, and test digital logic circuits in a user-friendly environment.
 
@@ -29,12 +30,13 @@ cd LogicCircuitSimulator
 ```bash
 pip install tkinter
 ```
+ **Or just download the release version as an app ;)**
 
 ## Usage
 
 1. Run the simulator:
 ```bash
-python src/logic_circuit.py
+python src/LogicCircuitSimulator.py
 ```
 
 2. **Creating Elements**:
@@ -80,7 +82,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the GPL-2.0 - see the LICENSE file for details.
 
-## Acknowledgments
-
-- Built with Python and Tkinter
-- Inspired by digital logic design principles
