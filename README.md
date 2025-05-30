@@ -1,5 +1,5 @@
 # Logic Circuit Simulator
-![EN README](README.md) | ![RU README](READMERU.md)
+[EN README](README.md) | [RU README](READMERU.md)
 
 A powerful and intuitive graphical logic circuit simulator built with Python and Tkinter. This application allows users to design, simulate, and test digital logic circuits in a user-friendly environment.
 
