@@ -672,10 +672,67 @@ class LogicCircuitSimulator(ctk.CTk):
         )
         if file_path:
             self.clear_scheme()
-            with open(file_path, "r") as f:
-                data = json.load(f)
-                # TODO: Implement scheme loading
+            try:
+                with open(file_path, "r") as f:
+                    data = json.load(f)
+                    
+                    # Create elements
+                    for element_data in data["elements"]:
+                        element = LogicalElement(
+                            self.canvas,
+                            element_data["x"],
+                            element_data["y"],
+                            element_data["type"]
+                        )
+                        element.set_simulator(self)
+                        self.elements.append(element)
+                    
+                    # Create connections
+                    for conn_data in data["connections"]:
+                        start_coords = conn_data["start"]
+                        end_coords = conn_data["end"]
+                        
+                        # Find closest ports
+                        start_port = self.find_closest_port(start_coords[0], start_coords[1])
+                        end_port = self.find_closest_port(end_coords[0], end_coords[1])
+                        
+                        if start_port and end_port:
+                            self.create_connection(start_port, end_port)
+                            
+                self.status_label.configure(text="Scheme loaded successfully")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to load scheme: {str(e)}")
+                self.status_label.configure(text="Error loading scheme")
                 
+    def find_closest_port(self, x, y):
+        closest_port = None
+        min_distance = float('inf')
+        
+        for element in self.elements:
+            # Check output port
+            if element.output:
+                port_coords = self.canvas.coords(element.output)
+                if port_coords:
+                    port_x = (port_coords[0] + port_coords[2]) / 2
+                    port_y = (port_coords[1] + port_coords[3]) / 2
+                    distance = ((port_x - x) ** 2 + (port_y - y) ** 2) ** 0.5
+                    if distance < min_distance:
+                        min_distance = distance
+                        closest_port = element.output
+            
+            # Check input ports
+            for port in element.inputs:
+                port_coords = self.canvas.coords(port)
+                if port_coords:
+                    port_x = (port_coords[0] + port_coords[2]) / 2
+                    port_y = (port_coords[1] + port_coords[3]) / 2
+                    distance = ((port_x - x) ** 2 + (port_y - y) ** 2) ** 0.5
+                    if distance < min_distance:
+                        min_distance = distance
+                        closest_port = port
+        
+        return closest_port if min_distance < 20 else None  # Return port if within 20 pixels
+
     def on_canvas_click(self, event):
         if self.simulation_mode:
             clicked = self.canvas.find_closest(event.x, event.y)
