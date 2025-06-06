@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox
 import json
 import math
+import tkinter as tk
 
 class LogicalElement:
     def __init__(self, canvas, x, y, element_type):
@@ -15,7 +16,11 @@ class LogicalElement:
         self.rect = None
         self.text = None
         self.button_highlight = None
+        self.simulator = None  # Add reference to simulator
         self.create_visual()
+        
+    def set_simulator(self, simulator):
+        self.simulator = simulator
         
     def create_visual(self):
         if self.element_type == "AND":
@@ -143,8 +148,9 @@ class LogicalElement:
             x-5, y-5, x+5, y+5,
             fill="#404040", outline="#505050", width=1
         )
+        # Bind click event directly to simulator's on_port_click
         self.canvas.tag_bind(port, "<Button-1>", 
-                           lambda e: self.on_port_click(port, port_type))
+                           lambda e, p=port, t=port_type: self.simulator.on_port_click(p, t))
         return port
 
     def move(self, dx, dy):
@@ -176,7 +182,7 @@ class LogicCircuitSimulator(ctk.CTk):
         self.title("Logic Circuit Simulator")
         self.geometry("1200x800")
         
-        # Set theme
+        # Set initial theme to dark
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         
@@ -194,6 +200,7 @@ class LogicCircuitSimulator(ctk.CTk):
         self.drag_start_x = 0
         self.drag_start_y = 0
         self.selected_element = None
+        self.current_theme = "dark"  # Add theme tracking
         
         # Bind canvas events
         self.canvas.bind("<Button-1>", self.on_canvas_click)
@@ -237,7 +244,8 @@ class LogicCircuitSimulator(ctk.CTk):
         self.canvas_frame = ctk.CTkFrame(self)
         self.canvas_frame.pack(side="left", fill="both", expand=True)
         
-        self.canvas = ctk.CTkCanvas(
+        # Use regular tkinter Canvas instead of CTkCanvas
+        self.canvas = tk.Canvas(
             self.canvas_frame,
             bg="#1a1a1a",
             width=800,
@@ -336,12 +344,12 @@ class LogicCircuitSimulator(ctk.CTk):
         ).pack(fill="x", padx=10, pady=20)
         
     def toggle_theme(self):
-        current_mode = ctk.get_appearance_mode()
-        new_mode = "light" if current_mode == "dark" else "dark"
-        ctk.set_appearance_mode(new_mode)
+        # Toggle between dark and light themes
+        self.current_theme = "light" if self.current_theme == "dark" else "dark"
+        ctk.set_appearance_mode(self.current_theme)
         
         # Update canvas background
-        bg_color = "#ffffff" if new_mode == "light" else "#1a1a1a"
+        bg_color = "#f0f0f0" if self.current_theme == "light" else "#1a1a1a"
         self.canvas.configure(bg=bg_color)
         
         # Update element colors
@@ -349,18 +357,50 @@ class LogicCircuitSimulator(ctk.CTk):
             if element.element_type == "OUTPUT":
                 if element.value:
                     self.canvas.itemconfig(element.rect, fill="red", outline="red")
+                    self.canvas.itemconfig(element.text, fill="white")
                 else:
-                    self.canvas.itemconfig(element.rect, fill=bg_color, outline="#404040")
+                    self.canvas.itemconfig(element.rect, fill="#ffffff" if self.current_theme == "light" else "#2b2b2b", 
+                                         outline="#808080" if self.current_theme == "light" else "#404040")
+                    self.canvas.itemconfig(element.text, fill="#000000" if self.current_theme == "light" else "#ffffff")
             else:
-                self.canvas.itemconfig(element.rect, fill="#2b2b2b" if new_mode == "dark" else "#ffffff")
-                self.canvas.itemconfig(element.text, fill="#ffffff" if new_mode == "dark" else "#000000")
+                # For logic elements
+                element_bg = "#ffffff" if self.current_theme == "light" else "#2b2b2b"
+                element_outline = "#808080" if self.current_theme == "light" else "#404040"
+                text_color = "#000000" if self.current_theme == "light" else "#ffffff"
+                
+                self.canvas.itemconfig(element.rect, fill=element_bg, outline=element_outline)
+                self.canvas.itemconfig(element.text, fill=text_color)
+                
+                # Update ports
+                port_fill = "#a0a0a0" if self.current_theme == "light" else "#404040"
+                port_outline = "#808080" if self.current_theme == "light" else "#505050"
+                
+                for port in element.inputs:
+                    self.canvas.itemconfig(port, fill=port_fill, outline=port_outline)
+                if element.output:
+                    if element.value:
+                        self.canvas.itemconfig(element.output, fill="#00ff00")
+                    else:
+                        self.canvas.itemconfig(element.output, fill=port_fill, outline=port_outline)
+                
+                # Update button highlight for input elements
+                if element.element_type == "INPUT" and element.button_highlight:
+                    highlight_color = "#c0c0c0" if self.current_theme == "light" else "#505050"
+                    self.canvas.itemconfig(element.button_highlight, outline=highlight_color)
+        
+        # Update connections - white in dark theme, black in light theme
+        connection_color = "#000000" if self.current_theme == "light" else "#ffffff"
+        for conn in self.connections:
+            self.canvas.itemconfig(conn[0], fill=connection_color, width=2)
         
     def create_element(self, element_type):
         element = LogicalElement(self.canvas, 50, 50, element_type)
-        element.on_port_click = self.on_port_click
+        element.set_simulator(self)
         self.elements.append(element)
         
     def on_port_click(self, port, port_type):
+        print(f"Port click: type={port_type}")  # Debug print
+        
         if self.simulation_mode:
             if port_type == "input":
                 element = self.find_element_by_port(port)
@@ -378,66 +418,101 @@ class LogicCircuitSimulator(ctk.CTk):
             return
             
         if self.selected_port is None:
+            print("First port selected")  # Debug print
             self.selected_port = (port, port_type)
             self.canvas.itemconfig(port, fill="#00ff00")
             self.status_label.configure(text="Select second port")
         else:
+            print("Second port selected")  # Debug print
             if self.selected_port[0] == port:
+                # Deselect if clicking the same port
                 self.canvas.itemconfig(port, fill="#404040")
                 self.selected_port = None
                 self.status_label.configure(text="Ready")
                 return
                 
+            # Create connection
             if self.is_valid_connection(self.selected_port[1], port_type):
+                print("Creating connection")  # Debug print
                 self.create_connection(self.selected_port[0], port)
                 self.status_label.configure(text="Connection created")
             else:
+                print("Invalid connection")  # Debug print
                 self.status_label.configure(text="Invalid connection")
                 
+            # Reset selection
             self.canvas.itemconfig(self.selected_port[0], fill="#404040")
             self.selected_port = None
             self.status_label.configure(text="Ready")
 
     def is_valid_connection(self, port1_type, port2_type):
-        return (port1_type == "output" and port2_type == "input") or \
-               (port1_type == "input" and port2_type == "output")
+        # Check if trying to connect output to input
+        if port1_type == "output" and port2_type == "input":
+            return True
+        # Check if trying to connect input to output
+        if port1_type == "input" and port2_type == "output":
+            return True
+        return False
                
     def create_connection(self, start_port, end_port):
         try:
+            print("Starting connection creation")  # Debug print
+            # Get coordinates
             start_coords = self.canvas.coords(start_port)
             end_coords = self.canvas.coords(end_port)
             
+            print(f"Start coords: {start_coords}")  # Debug print
+            print(f"End coords: {end_coords}")  # Debug print
+            
             if not start_coords or not end_coords:
+                print("Invalid coordinates")  # Debug print
                 self.status_label.configure(text="Error: Invalid port coordinates")
                 return
                 
-            line = self.canvas.create_line(
-                (start_coords[0] + start_coords[2])/2,
-                (start_coords[1] + start_coords[3])/2,
-                (end_coords[0] + end_coords[2])/2,
-                (end_coords[1] + end_coords[3])/2,
-                fill="#ffffff", width=2
-            )
+            # Calculate center points of the ports
+            start_x = (start_coords[0] + start_coords[2]) / 2
+            start_y = (start_coords[1] + start_coords[3]) / 2
+            end_x = (end_coords[0] + end_coords[2]) / 2
+            end_y = (end_coords[1] + end_coords[3]) / 2
             
+            # Create line
+            line = self.canvas.create_line(
+                start_x, start_y,
+                end_x, end_y,
+                fill="#ffffff", width=2,
+                tags=("connection",)  # Add tag for easier identification
+            )
+            print(f"Line created: {line}")  # Debug print
+            
+            # Bind right-click event to delete connection
             self.canvas.tag_bind(line, "<Button-3>", lambda e: self.delete_connection(line))
             
+            # Store connection
             self.connections.append((line, start_port, end_port))
+            print(f"Connection stored. Total connections: {len(self.connections)}")  # Debug print
             
+            # Update simulation if in simulation mode
             if self.simulation_mode:
                 self.update_simulation()
                 
             self.status_label.configure(text="Connection created")
         except Exception as e:
+            print(f"Error in create_connection: {str(e)}")  # Debug print
             self.status_label.configure(text=f"Error creating connection: {str(e)}")
+            # Reset selection
             if self.selected_port:
                 self.canvas.itemconfig(self.selected_port[0], fill="#404040")
                 self.selected_port = None
 
     def delete_connection(self, line):
+        # Find and remove the connection
         for i, conn in enumerate(self.connections):
             if conn[0] == line:
+                # Delete the line from canvas
                 self.canvas.delete(line)
+                # Remove from connections list
                 self.connections.pop(i)
+                # Update simulation if in simulation mode
                 if self.simulation_mode:
                     self.update_simulation()
                 break
@@ -474,13 +549,18 @@ class LogicCircuitSimulator(ctk.CTk):
         if not self.simulation_mode:
             return
 
+        # Create dictionary for storing input values of each element
         input_values = {element: [] for element in self.elements}
+        
+        # Create dictionary for storing output values of each element
         output_values = {element: element.value for element in self.elements}
 
+        # Collect all input values for each element
         for conn in self.connections:
             start_port = conn[1]
             end_port = conn[2]
             
+            # Find elements connected through these ports
             start_element = None
             end_element = None
             
@@ -493,12 +573,15 @@ class LogicCircuitSimulator(ctk.CTk):
             if start_element and end_element:
                 input_values[end_element].append(output_values[start_element])
 
+        # Process each element
         for element in self.elements:
             if element.element_type == "INPUT":
-                continue
+                continue  # Skip input elements, their values are already set
 
+            # Get input values for the element
             inputs = input_values[element]
             
+            # Calculate output value based on element type
             if element.element_type == "AND":
                 element.value = all(inputs) if inputs else False
             elif element.element_type == "OR":
@@ -508,18 +591,27 @@ class LogicCircuitSimulator(ctk.CTk):
             elif element.element_type == "XOR":
                 element.value = sum(inputs) % 2 == 1 if inputs else False
             elif element.element_type == "OUTPUT":
-                element.value = inputs[0] if inputs else False
+                # For LED, take value from input
+                if inputs:
+                    element.value = inputs[0]
+                else:
+                    element.value = False
 
+            # Update output value in dictionary
             output_values[element] = element.value
 
+            # Update visual state of element
             if element.element_type == "OUTPUT":
                 if element.value:
+                    # If input is 1 - LED is red
                     self.canvas.itemconfig(element.rect, fill="red", outline="red")
                     self.canvas.itemconfig(element.text, fill="white")
                 else:
+                    # If input is 0 - LED is white
                     self.canvas.itemconfig(element.rect, fill="#2b2b2b", outline="#404040")
                     self.canvas.itemconfig(element.text, fill="#ffffff")
             else:
+                # For logic elements, update output port color
                 color = "#00ff00" if element.value else "#404040"
                 self.canvas.itemconfig(element.output, fill=color)
 
@@ -683,6 +775,7 @@ class LogicCircuitSimulator(ctk.CTk):
                 (end_coords[0] + end_coords[2])/2,
                 (end_coords[1] + end_coords[3])/2
             )
+            # Update simulation if in simulation mode
             if self.simulation_mode:
                 self.update_simulation()
 
