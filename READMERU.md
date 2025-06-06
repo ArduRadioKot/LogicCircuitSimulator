@@ -28,7 +28,7 @@ cd LogicCircuitSimulator
 
 3. Установите необходимые зависимости:
 ```bash
-pip install tkinter
+pip install customtkinter
 ```
  **Или просто скачайте версию приложения из релиза ;)**
 
